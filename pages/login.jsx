@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input, List } from "antd-mobile";
 
-export default () => {
+export default function Login() {
   const [value, setValue] = useState("");
   return (
     <>
@@ -19,4 +19,4 @@ export default () => {
       </List>
     </>
   );
-};
+}
