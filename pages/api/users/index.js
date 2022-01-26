@@ -1,6 +1,16 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
-
+/**
+ * @swagger
+ * /api/users:
+ *   get:
+ *     description: Returns users list
+ *     responses:
+ *       200:
+ *         description: user[]
+ *       400:
+ *         description: error!
+ */
 export default async function handler(req, res) {
   const { method } = req;
 
