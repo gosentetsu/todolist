@@ -1,14 +1,15 @@
 .app {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
+  background: #6e1616;
 }
 
-.content {
-  height: 100%;
+.bar {
+  min-width: 100%;
+  position: fixed;
+  bottom: 0px;
+  background: white;
 }
 
-.bottom {
-  bottom: 0;
+body {
+  margin: 0px;
+  padding: 0px;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Badge, TabBar } from "antd-mobile";
 import {
-  AppOutline,
+  CalendarOutline,
   MessageOutline,
   MessageFill,
   UnorderedListOutline,
@@ -10,22 +10,15 @@ import {
 export default function Layout(props) {
   const tabs = [
     {
-      key: "home",
-      title: "首页",
-      icon: <AppOutline />,
-      badge: Badge.dot,
-    },
-    {
       key: "todo",
       title: "我的待办",
       icon: <UnorderedListOutline />,
       badge: "5",
     },
     {
-      key: "message",
-      title: "我的消息",
-      icon: (active) => (active ? <MessageFill /> : <MessageOutline />),
-      badge: "99+",
+      key: "calendar",
+      title: "我的日程",
+      icon: <CalendarOutline />,
     },
     {
       key: "personalCenter",
@@ -35,9 +28,9 @@ export default function Layout(props) {
   ];
 
   return (
-    <div className="app">
-      <main className="content">{props.children}</main>
-      <TabBar className="bottom" defaultActiveKey={props.defaultActiveKey}>
+    <div>
+      <main>{props.children}</main>
+      <TabBar className="bar" defaultActiveKey={props.defaultActiveKey}>
         {tabs.map((item) => (
           <TabBar.Item
             key={item.key}
