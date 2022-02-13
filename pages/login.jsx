@@ -1,22 +1,41 @@
-import React, { useState } from "react";
-import { Input, List } from "antd-mobile";
+import React from "react";
+import { Form, Input, Button, Space } from "antd-mobile";
+import { useRouter } from "next/router";
 
 export default function Login() {
-  const [value, setValue] = useState("");
+  const router = useRouter();
   return (
-    <>
-      <List
+    <div>
+      <Space
+        block
+        justify="center"
         style={{
-          "--prefix-width": "6em",
+          minHeight: "100vh",
+          padding: "1rem",
         }}
+        direction="vertical"
       >
-        <List.Item title="用户名">
-          <Input placeholder="请输入用户名" clearable />
-        </List.Item>
-        <List.Item title="密码">
-          <Input placeholder="请输入密码" clearable type="password" />
-        </List.Item>
-      </List>
-    </>
+        <Form layout="vertical">
+          <Form.Item label="用户名" name="username">
+            <Input placeholder="请输入用户名" clearable />
+          </Form.Item>
+          <Form.Item label="密码" name="password">
+            <Input placeholder="请输入密码" clearable type="password" />
+          </Form.Item>
+        </Form>
+        <Button block size="large" color="primary">
+          登录
+        </Button>
+        <Button
+          block
+          size="large"
+          fill="outline"
+          color="primary"
+          onClick={() => router.push("/register")}
+        >
+          注册
+        </Button>
+      </Space>
+    </div>
   );
 }
