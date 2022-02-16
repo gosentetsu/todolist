@@ -1,40 +1,35 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
-/**
- * @swagger
- * /api/users:
- *   get:
- *     description: Returns users list
- *     responses:
- *       200:
- *         description: user[]
- *       400:
- *         description: error!
- */
-export default async function handler(req, res) {
-  const { method } = req;
 
+export default async function handler(req, res) {
   await dbConnect();
 
-  switch (method) {
-    case "GET":
-      try {
-        const users = await User.find({});
-        res.status(200).json({ success: true, data: users });
-      } catch (error) {
-        res.status(400).json({ success: false });
-      }
-      break;
+  switch (req.method) {
     case "POST":
-      try {
-        const pet = await User.create(req.body);
-        res.status(201).json({ success: true, data: pet });
-      } catch (error) {
-        res.status(400).json({ success: false });
+      let idLength = 6;
+      let idChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let userId = "U_";
+      for(let i = 0; i < idLength; i++){
+          let ind = Math.floor(Math.random()*62);
+          userId += idChar[ind];
       }
+      
+      let user = {
+        userId: userId,
+        userName: req.body.userName,
+        password: req.body.password,
+        slogan: "",
+        picUrl: "",
+        taskIds: []
+      };
+      await User.create(user);
+      res.status(200).json({ 
+        message: "success",
+        entity: {userId: userId}
+      });
       break;
     default:
-      res.status(400).json({ success: false });
+      res.status(400).json({ message: "null"});
       break;
   }
 }
