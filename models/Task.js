@@ -10,6 +10,8 @@ const TaskSchema = new mongoose.Schema({
   beginTime: Date,
   endTime: Date,
   userIds: []
+}, {
+  versionKey: false
 });
 
 export default mongoose.model("Task", TaskSchema);
