@@ -1,6 +1,6 @@
 const withImages = require("next-images");
 
-const withTM = require("next-transpile-modules")(["antd-mobile"]);
+const withTM = require("next-transpile-modules")(["antd-mobile", "react-vant"]);
 
 module.exports = withTM(
   withImages({
