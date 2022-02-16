@@ -8,6 +8,8 @@ const UserSchema = new mongoose.Schema({
   slogan: String,
   picUrl: String,
   taskIds: []
+}, {
+  versionKey: false
 });
 
 export default mongoose.model("User", UserSchema);
