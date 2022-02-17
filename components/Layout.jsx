@@ -19,7 +19,7 @@ export default function Layout(props) {
       badge: "5",
     },
     {
-      key: "/calendar",
+      key: "/schedule",
       title: "我的日程",
       icon: <CalendarOutline />,
     },
