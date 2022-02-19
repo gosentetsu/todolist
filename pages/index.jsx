@@ -13,10 +13,5 @@ export default function Index() {
   });
 
   // todo: need some auth tool to validate
-  // this page should be optimized...
-  return (
-    <div>
-      <h1>need to add authentication and validator</h1>
-    </div>
-  );
+  return null;
 }

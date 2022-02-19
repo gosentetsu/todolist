@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { Badge, TabBar } from "antd-mobile";
 import {
@@ -6,11 +6,15 @@ import {
   UnorderedListOutline,
   UserOutline,
 } from "antd-mobile-icons";
+import { useSelector } from "react-redux";
 export default function Layout(props) {
   const router = useRouter();
-  function handleRoute(params) {
-    console.log("test");
-  }
+  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    if (user.loggedIn === false) {
+      router.push("/login");
+    }
+  });
   const tabs = [
     {
       key: "/home",
@@ -29,7 +33,6 @@ export default function Layout(props) {
       icon: <UserOutline />,
     },
   ];
-
   return (
     <div>
       <main>{props.children}</main>
