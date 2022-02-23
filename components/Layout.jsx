@@ -10,11 +10,11 @@ import { useSelector } from "react-redux";
 export default function Layout(props) {
   const router = useRouter();
   const user = useSelector((state) => state.user);
-  useEffect(() => {
-    if (user.loggedIn === false) {
-      router.push("/login");
-    }
-  });
+  // useEffect(() => {
+  //   if (user.loggedIn === false) {
+  //     router.push("/login");
+  //   }
+  // });
   const tabs = [
     {
       key: "/home",
