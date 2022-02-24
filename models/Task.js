@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { ST } from "next/dist/shared/lib/utils";
 
 const TaskSchema = new mongoose.Schema({
   taskId: String,
@@ -8,8 +7,7 @@ const TaskSchema = new mongoose.Schema({
   tag: String,
   status: String,
   beginTime: Date,
-  endTime: Date,
-  userIds: []
+  endTime: Date
 }, {
   versionKey: false
 });
