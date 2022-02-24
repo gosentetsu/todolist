@@ -19,8 +19,7 @@ export default async function handler(req, res) {
         userName: req.body.userName,
         password: req.body.password,
         slogan: "",
-        picUrl: "",
-        taskIds: []
+        picUrl: ""
       };
       await User.create(user);
       res.status(200).json({ 

@@ -1,6 +1,7 @@
 import dbConnect from "../../../lib/dbConnect";
 import Task from "../../../models/Task";
 import User from "../../../models/User";
+import Relation from "../../../models/Relation";
 /**
  * @swagger
  * /api/tasks/[userId]:
@@ -17,23 +18,18 @@ export default async function handler(req, res) {
     query: { userId },
     method
   } = req;
-  let result, task;
+  let result, task, relation;
 
   await dbConnect();
 
-  //获取useId对应的所有taskId
-  const user = await User.findOne({userId: userId});
-  if (!user) {
-    return res.status(400).json({ message: "null"});
-  }
-  let taskIds = user.taskIds;
-
   switch (method) {
     case "GET":
+      //获取useId对应的所有taskId
+      relation = await Relation.find({userId: userId});
       //遍历查询Task表得到相应的待办事项
       let tasks = [];
-      for(let taskId of taskIds){
-        task = await Task.findOne({taskId: taskId}).lean();
+      for(let rel of relation){
+        task = await Task.findOne({taskId: rel.taskId}).lean();
         delete task._id;
         tasks.push(task);
       }
@@ -53,7 +49,6 @@ export default async function handler(req, res) {
       
       task = {
         taskId: taskId,
-        userIds: [userId],
         status: "not complete",
         content: req.body.content,
         comment: req.body.comment,
@@ -63,11 +58,11 @@ export default async function handler(req, res) {
       };
       await Task.create(task);
 
-      taskIds.push(taskId);
-      result = await User.updateOne({userId: userId}, {$set: {taskIds: taskIds}})
-      if(result.modifiedCount !== 1){
-        return res.status(400).json({ message: "addition failed"});
-      }
+      relation = {
+        taskId: taskId,
+        userId: userId
+      };
+      await Relation.create(relation);
       
       res.status(200).json({ 
         message: "success",
@@ -80,15 +75,14 @@ export default async function handler(req, res) {
         return res.status(400).json({ message: "delete failed"});
       }
 
-      taskIds.map((val, ind) => {
-        if(val == req.body.taskId){
-          taskIds.splice(ind, 1);
-        }
+      result = await Relation.deleteOne({
+        taskId: req.body.taskId,
+        userId: userId
       });
-      result = await User.updateOne({userId: userId}, {$set: {taskIds: taskIds}})
-      if(result.modifiedCount !== 1){
-        return res.status(400).json({ message: "update failed"});
+      if(result.deletedCount !== 1){
+        return res.status(400).json({ message: "delete failed"});
       }
+
       res.status(200).json({ message: "success"});
       break;
     default:
