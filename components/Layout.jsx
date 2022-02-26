@@ -20,7 +20,7 @@ export default function Layout(props) {
       key: "/home",
       title: "我的待办",
       icon: <UnorderedListOutline />,
-      badge: "5",
+      badge: "3",
     },
     {
       key: "/schedule",
@@ -36,7 +36,11 @@ export default function Layout(props) {
   return (
     <div>
       <main>{props.children}</main>
-      <TabBar className="bar" onChange={(key) => router.push(key)}>
+      <TabBar
+        className="bar"
+        onChange={(key) => router.push(key)}
+        activeKey={router.pathname}
+      >
         {tabs.map((item) => (
           <TabBar.Item
             key={item.key}

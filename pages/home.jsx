@@ -1,76 +1,24 @@
 import React, { useState } from "react";
 import { List, Checkbox, Tag } from "antd-mobile";
 import Layout from "../components/Layout";
-
+import TodoListCard from "../components/TodoListCard";
 export default function Home() {
-  const testlists = [
-    {
-      taskId: "taskId",
-      content: "待办事项内容",
-      comment: "备注",
-      tag: "标签",
-      status: true,
-      beginTime: "beginDate",
-      endTime: "endDate",
-      coUsers: [],
-    },
-    {
-      taskId: "taskId2",
-      content: "待办事项内容",
-      comment: "备注",
-      tag: "标签",
-      status: true,
-      beginTime: "beginDate",
-      endTime: "endDate",
-      coUsers: [],
-    },
-    {
-      taskId: "taskId3",
-      content: "待办事项内容",
-      comment: "备注",
-      tag: "标签",
-      status: true,
-      beginTime: "beginDate",
-      endTime: "endDate",
-      coUsers: [],
-    },
-  ];
-  const [lists, setList] = useState(testlists);
+  const testItem = {
+    taskId: "taskId",
+    content: "待办事项内容",
+    comment: "备注",
+    tag: "标签",
+    status: false,
+    beginTime: "beginDate",
+    endTime: "endDate",
+    coUsers: [],
+  };
+  const testItem2 = { ...testItem };
+  testItem2.status = true;
   return (
     <Layout>
-      <List mode="card" header="未完成待办事项">
-        {lists.map((item) => (
-          <List.Item
-            key={item.taskId}
-            title={
-              <Tag color="primary" fill="outline">
-                {item.tag}
-              </Tag>
-            }
-            description={item.comment}
-            prefix={<Checkbox />}
-          >
-            {item.content}
-          </List.Item>
-        ))}
-      </List>
-      <List mode="card" header="已完成待办事项">
-        {lists.map((item) => (
-          <List.Item
-            className="dimmed"
-            key={item.taskId}
-            title={
-              <Tag color="primary" fill="outline">
-                {item.tag}
-              </Tag>
-            }
-            description={item.comment}
-            prefix={<Checkbox defaultChecked={true} />}
-          >
-            {item.content}
-          </List.Item>
-        ))}
-      </List>
+      <TodoListCard content={Array(3).fill(testItem)} header="未完成的任务" />
+      <TodoListCard content={Array(3).fill(testItem2)} header="已完成的任务" />
     </Layout>
   );
 }
