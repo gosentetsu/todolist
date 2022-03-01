@@ -1,5 +1,6 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
+import verifyToken from "../../../lib/verifyToken"
 /**
  * @swagger
  * /api/users/[userId]:
@@ -17,6 +18,10 @@ export default async function handler(req, res) {
     body,
     method,
   } = req;
+
+  if(userId !== verifyToken(body.token)){
+    return res.status(400).json({ message: "please sign in"});
+  }
 
   await dbConnect();
 

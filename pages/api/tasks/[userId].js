@@ -1,7 +1,7 @@
 import dbConnect from "../../../lib/dbConnect";
 import Task from "../../../models/Task";
-import User from "../../../models/User";
 import Relation from "../../../models/Relation";
+import verifyToken from "../../../lib/verifyToken"
 /**
  * @swagger
  * /api/tasks/[userId]:
@@ -16,9 +16,14 @@ import Relation from "../../../models/Relation";
 export default async function handler(req, res) {
   const {
     query: { userId },
-    method
+    method,
+    body
   } = req;
   let result, task, relation;
+
+  if(userId !== verifyToken(body.token)){
+    return res.status(400).json({ message: "please sign in"});
+  }
 
   await dbConnect();
 
@@ -50,11 +55,11 @@ export default async function handler(req, res) {
       task = {
         taskId: taskId,
         status: "not complete",
-        content: req.body.content,
-        comment: req.body.comment,
-        tag: req.body.tag,
-        beginTime: req.body.beginTime,
-        endTime: req.body.endTime,
+        content: body.content,
+        comment: body.comment,
+        tag: body.tag,
+        beginTime: body.beginTime,
+        endTime: body.endTime,
       };
       await Task.create(task);
 
@@ -69,14 +74,24 @@ export default async function handler(req, res) {
         entity: {taskId: taskId}
       });
       break;
+    case "PUT":
+      if(!body.taskId){
+        return res.status(400).json({ message: "taskId is required"});
+      }
+      result = await Task.updateOne({taskId: body.taskId}, {$set: body});
+      if(result.modifiedCount !== 1){
+        return res.status(400).json({ message: "update failed"});
+      }
+      res.status(200).json({ message: "success"});
+      break;
     case "DELETE":
-      result = await Task.deleteOne({taskId: req.body.taskId});
+      result = await Task.deleteOne({taskId: body.taskId});
       if(result.deletedCount !== 1){
         return res.status(400).json({ message: "delete failed"});
       }
 
       result = await Relation.deleteOne({
-        taskId: req.body.taskId,
+        taskId: body.taskId,
         userId: userId
       });
       if(result.deletedCount !== 1){
