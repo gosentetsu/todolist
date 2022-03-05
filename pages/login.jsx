@@ -5,6 +5,15 @@ import { useRouter } from "next/router";
 export default function Login() {
   const router = useRouter();
   function login(values) {
+    fetch("/api/users/login", {
+      method: "POST",
+      body: values,
+    })
+      .then((res) => {
+        console.log(res);
+        return res.json();
+      })
+      .then((res) => console.log(res));
     console.log(values);
   }
   return (
