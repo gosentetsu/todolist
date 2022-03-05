@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from "next/router";
 import { Form, Button, Field} from 'react-vant';
+import NavBarCard from "../components/NavBarCard";
 
 export default function Connect() {
   const router = useRouter();
@@ -10,6 +11,7 @@ export default function Connect() {
   };
   return (
     <div>
+      <NavBarCard title="问题反馈" path="/center" />
       <Form
       form={form}
       onFinish={onFinish}
@@ -24,16 +26,12 @@ export default function Connect() {
       }
     >
       
-        <Form.Item name="textarea" label="问题反馈">
+        <Form.Item name="textarea" label="问题描述">
           <Field rows={3} autosize type="textarea" maxlength={200} showWordLimit/>
         </Form.Item>
       
       </Form>
-      <div style={{ margin: '16px 16px 0' }}>
-          <Button round nativeType="submit" type="primary" block size = "mini" onClick={()=>{router.push("/center")}}>
-            返回
-          </Button>
-      </div>
+      
     </div>    
   );
 }
