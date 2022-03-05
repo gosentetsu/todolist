@@ -17,14 +17,16 @@ export default async function handler(req, res) {
   const {
     query: { userId },
     method,
-    body
+    body,
+    cookies
   } = req;
-  let result, task, relation;
+  let result, task, relation, taskId;
+  let idLength = 6;
+  let idChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-  if(userId !== verifyToken(body.token)){
+  if(!cookies || !cookies.token || userId !== verifyToken(cookies.token)){
     return res.status(400).json({ message: "please sign in"});
   }
-
   await dbConnect();
 
   switch (method) {
@@ -44,12 +46,15 @@ export default async function handler(req, res) {
       });
       break;
     case "POST":
-      let idLength = 6;
-      let idChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      let taskId = "T_";
-      for(let i = 0; i < idLength; i++){
+      while(true){
+        taskId = "T_";
+        for(let i = 0; i < idLength; i++){
           let ind = Math.floor(Math.random()*62);
           taskId += idChar[ind];
+        }
+        // taskId查重
+        result = await Task.findOne({taskId: taskId});
+        if(!result) break;
       }
       
       task = {

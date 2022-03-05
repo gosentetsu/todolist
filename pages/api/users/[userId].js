@@ -17,9 +17,10 @@ export default async function handler(req, res) {
     query: { userId },
     body,
     method,
+    cookies
   } = req;
 
-  if(userId !== verifyToken(body.token)){
+  if(!cookies || !cookies.token || userId !== verifyToken(cookies.token)){
     return res.status(400).json({ message: "please sign in"});
   }
 

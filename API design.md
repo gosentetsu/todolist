@@ -61,7 +61,7 @@
     data: {
       message: "success",
       entity: {
-        token: String
+        userId: String
       }
     }
   }
@@ -82,13 +82,6 @@
 - `GET` `/api/users/userId`
 
   > 根据userId查找用户
-
-  - body
-  ```javascript
-  {
-    token: String
-  }
-  ```
 
   - response
   ```javascript
@@ -122,8 +115,7 @@
     slogan: String,  // 可选
     userName: String,  // 可选
     password: String,  // 可选，必须和newPass同时出现
-    newPass: String,
-    token: String
+    newPass: String
   }
   ```
 
@@ -172,18 +164,17 @@
       }
     }
   }
+  {
+    code: 400,
+    data: {
+      message: "the user name already exists"  // userName已经注册过
+    }
+  }
   ```
 
 - `GET` `/api/tasks/userId`
 
   > 根据userId查找用户所有的task
-
-  - body
-  ```javascript
-  {
-    token: String
-  }
-  ```
 
   - response
   ```javascript
@@ -218,8 +209,7 @@
     comment: String,
     tag: String,
     beginTime: Date,
-    endTime: Date,
-    token: String
+    endTime: Date
   }
   ```
 
@@ -243,8 +233,7 @@
   - body
   ```javascript
   {
-    taskId: String,
-    token: String
+    taskId: String
   }
   ```
 
@@ -277,8 +266,7 @@
     tag: String,
     status: String,
     beginTime: Date,
-    endTime: Date,
-    token: String
+    endTime: Date
   }
   ```
 
@@ -313,8 +301,7 @@
   {
     taskId: String,  // 要操作的待办事项id
     userId: String,
-    coworkerId: String,  // 合作者的userId
-    token: String
+    coworkerId: String  // 合作者的userId
   }
   ```
 
@@ -355,8 +342,7 @@
   {
     taskId: String,  // 要操作的待办事项id
     userId: String,
-    coworkerId: String,  // 合作者的userId
-    token: String
+    coworkerId: String  // 合作者的userId
   }
   ```
 
@@ -381,7 +367,3 @@
     }
   }
   ```
-
-- TODO
-  - 合作待办事项的权限问题
-  - 用户上传头像的api

@@ -6,10 +6,11 @@ import verifyToken from "../../../lib/verifyToken"
 export default async function handler(req, res) {
   const {
     method,
-    body
+    body,
+    cookies
   } = req;
 
-  if(!body.token || body.userId !== verifyToken(body.token)){
+  if(!cookies || !cookies.token || userId !== verifyToken(cookies.token)){
     return res.status(400).json({ message: "please sign in"});
   }
 

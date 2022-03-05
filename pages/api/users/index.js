@@ -2,16 +2,29 @@ import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
 
 export default async function handler(req, res) {
+  let result, userId;
+  let idLength = 6;
+
   await dbConnect();
 
   switch (req.method) {
     case "POST":
-      let idLength = 6;
+      // 用户名查重
+      result = await User.findOne({userName: req.body.userName});
+      if(result){
+        return res.status(400).json({ message: "the user name already exists"});
+      }
+
       let idChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      let userId = "U_";
-      for(let i = 0; i < idLength; i++){
+      while(true){
+        userId = "U_";
+        for(let i = 0; i < idLength; i++){
           let ind = Math.floor(Math.random()*62);
           userId += idChar[ind];
+        }
+        // userId查重
+        result = await User.findOne({userId: userId});
+        if(!result) break;
       }
       
       let user = {
