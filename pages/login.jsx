@@ -7,7 +7,7 @@ export default function Login() {
   function login(values) {
     fetch("/api/users/login", {
       method: "POST",
-      body: values,
+      body: JSON.stringify(values),
     })
       .then((res) => {
         console.log(res);
