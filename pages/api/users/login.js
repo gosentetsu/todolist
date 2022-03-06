@@ -27,6 +27,16 @@ export default async function handler(req, res) {
           path: "/",
         })
       );
+      res.setHeader(
+        "Set-Cookie",
+        cookie.serialize("userId", user.userId, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development",
+          maxAge: 24 * 60 * 60,
+          sameSite: "strict",
+          path: "/",
+        })
+      );
       res.status(200).json({ 
         message: "success",
         entity: {userId: user.userId}
