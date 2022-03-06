@@ -5,16 +5,23 @@ import { useRouter } from "next/router";
 export default function Login() {
   const router = useRouter();
   function login(values) {
-    fetch("/api/users/login", {
+    const options = {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
-    })
+    };
+
+    fetch("http://localhost:3000/api/users/login", options)
+      .then((response) => response.json())
       .then((res) => {
-        console.log(res);
-        return res.json();
-      })
-      .then((res) => console.log(res));
-    console.log(values);
+        let { message } = res;
+        Toast.show({
+          content: message,
+        });
+        if (message === "success") {
+          router.push("/home");
+        }
+      });
   }
   return (
     <main className="center">
