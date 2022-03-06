@@ -19,23 +19,22 @@ export default async function handler(req, res) {
       let token = generateToken(user.userId, 24);  // 第二个参数是过期时间
       res.setHeader(
         "Set-Cookie",
-        cookie.serialize("token", token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV !== "development",
-          maxAge: 24 * 60 * 60,
-          sameSite: "strict",
-          path: "/",
-        })
-      );
-      res.setHeader(
-        "Set-Cookie",
-        cookie.serialize("userId", user.userId, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV !== "development",
-          maxAge: 24 * 60 * 60,
-          sameSite: "strict",
-          path: "/",
-        })
+        [
+          cookie.serialize("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development",
+            maxAge: 24 * 60 * 60,
+            sameSite: "strict",
+            path: "/",
+          }),
+          cookie.serialize("userId", user.userId, {
+            httpOnly: false,
+            secure: process.env.NODE_ENV !== "development",
+            maxAge: 24 * 60 * 60,
+            sameSite: "strict",
+            path: "/",
+          })
+        ]
       );
       res.status(200).json({ 
         message: "success",
