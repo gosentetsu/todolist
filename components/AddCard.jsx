@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import { Form, Button, Field, Rate, Toast } from 'react-vant';
 import { CalendarItem, PickerItem, TimeItem } from '../components/CombinedItems.tsx';
 
-const formatDate = (date) => `${date.getMonth() + 1}/${date.getDate()}`;
-
 export default function AddCard(props){
   const [form] = Form.useForm();
   const { initdate } = props;
