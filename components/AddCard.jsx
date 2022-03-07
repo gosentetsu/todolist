@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Form, Button, Field, Rate } from 'react-vant';
-import { CalendarItem, PickerItem } from '../components/CombinedItems.tsx';
+import { CalendarItem, PickerItem, TimeItem } from '../components/CombinedItems.tsx';
 
 const formatDate = (date) => `${date.getMonth() + 1}/${date.getDate()}`;
 
@@ -9,6 +9,42 @@ export default function AddCard(props){
   const [form] = Form.useForm();
   const { initdate } = props;
   const router = useRouter();
+  const [minHour, setMinHour] = useState("00");
+  const [minMinute, setMinMinute] = useState("00");
+  const [maxHour, setMaxHour] = useState("23");
+  const [maxMinute, setMaxMinute] = useState("59");
+  const [tempMinMinute, setTempMinMinute] = useState("00");
+  const [tempMaxMinute, setTempMaxMinute] = useState("59");
+
+  const changeMinTime = (val) => {
+    setMinHour(val.slice(0,2));
+    setMinMinute(val.slice(3,5));
+  }
+
+  const changeMaxTime = (val) => {
+    setMaxHour(val.slice(0,2));
+    setMaxMinute(val.slice(3,5));
+  }
+
+  const changeMaxMinute = (val) => {
+    setMaxMinute(val);
+  }
+
+  const changeMinMinute = (val) => {
+    setMinMinute(val);
+  }
+
+  const changeTempMaxMinute = (val) => {
+    setTempMaxMinute(val);
+  }
+
+  const changeTempMinMinute = (val) => {
+    setTempMinMinute(val);
+  }
+
+
+  
+
   const onFinish = (values) => {
     console.log(values);
   };
@@ -43,6 +79,7 @@ export default function AddCard(props){
         customField>
         <PickerItem placeholder="选择类型" />
       </Form.Item>
+
       <Form.Item
         name="calendar"
         label="日期" 
@@ -51,6 +88,21 @@ export default function AddCard(props){
         <CalendarItem placeholder="选择日期" />
       </Form.Item>
       
+      <Form.Item
+        name="beginTime"
+        label="开始时间" 
+        customField>
+        <TimeItem placeholder="选择开始日期" minHour="00" minMinute="00" maxHour={maxHour} maxMinute={maxMinute} changeTime={changeMinTime} changeMinute={changeMaxMinute} tag="1" changeTempTime={changeTempMinMinute} temp={tempMaxMinute} />
+      </Form.Item>
+
+      <Form.Item
+        name="endTime"
+        label="结束时间" 
+        customField>
+        <TimeItem placeholder="选择结束日期" minHour={minHour} minMinute={minMinute} maxHour="23" maxMinute="59" changeTime={changeMaxTime} changeMinute={changeMinMinute} tag="0" changeTempTime={changeTempMaxMinute} temp={tempMinMinute} />
+      </Form.Item>
+
+
       <Form.Item name="note" label="备注">
         <Field rows={3} autosize type="note" maxlength={140} showWordLimit />
       </Form.Item>
