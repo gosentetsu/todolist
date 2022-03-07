@@ -7,4 +7,4 @@ const RelationSchema = new mongoose.Schema({
   versionKey: false
 });
 
-export default mongoose.model("Relation", RelationSchema);
+export default mongoose.models.Relation ||  mongoose.model("Relation", RelationSchema);
