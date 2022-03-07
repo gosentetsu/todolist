@@ -4,11 +4,11 @@ import {  Edit } from '@react-vant/icons';
 import { Card, Image, Button, Toast, Space, Cell, Divider } from 'react-vant';
 import Layout from "../components/Layout";
 export default function Center({req}) {
- const {userId} = req.cookies;
+//  const {userId} = req.cookies;
  const [users, setUsers] = useState({})
  const newUsers = {}
  const getUser = () =>{
-  fetch("http://localhost:3000/api/users/" + userId,{method:'GET'})
+  fetch("http://localhost:3000/api/users/user_01",{method:'GET'})
   .then((response) => response.json()) 
   .then((responseData) => {
     // console.log(responseData.entity);

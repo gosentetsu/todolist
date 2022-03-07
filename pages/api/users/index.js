@@ -1,14 +1,20 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
+import checkAttr from "../../../lib/checkAttributes"
 
 export default async function handler(req, res) {
-  let result, userId;
+  let result, userId, check_result;
   let idLength = 6;
 
   await dbConnect();
 
   switch (req.method) {
     case "POST":
+      check_result = checkAttr(req.body, ["userName", "password"], true);
+      if(!check_result){
+        return res.status(400).json({ message: "wrong attributes"});
+      }
+
       // 用户名查重
       result = await User.findOne({userName: req.body.userName});
       if(result){

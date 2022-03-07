@@ -1,7 +1,9 @@
 import dbConnect from "../../../lib/dbConnect";
+import User from "../../../models/User";
 import Task from "../../../models/Task";
 import Relation from "../../../models/Relation";
 import verifyToken from "../../../lib/verifyToken"
+import checkAttr from "../../../lib/checkAttributes"
 
 export default async function handler(req, res) {
   const {
@@ -10,31 +12,30 @@ export default async function handler(req, res) {
     cookies
   } = req;
 
-  if(!cookies || !cookies.token || userId !== verifyToken(cookies.token)){
+  if(!cookies || !cookies.token || cookies.userId !== verifyToken(cookies.token)){
     return res.status(400).json({ message: "please sign in"});
   }
 
+  let check_result = checkAttr(body, ["taskId", "coworkerUserNam"], true);
+  if(!check_result){
+    return res.status(400).json({ message: "wrong attributes"});
+  }
+
   let result;
-  let relation = {
-    taskId: body.taskId,
-    userId: body.userId
-  };
 
   await dbConnect();
 
-  result = await Relation.findOne(relation);
-  if(!result){
-    return res.status(400).json({ message: "the task doesn't belong to you"});
+  let user = await User.findOne({taskId: body.coworkerUserNam});
+  if(!user){
+    return res.status(400).json({ message: "the user doesn't exist"});
   }
-
-  relation.userId = body.coworkerId;
+  let relation = {
+    taskId: body.taskId,
+    userId: user.userId
+  };
 
   switch (method) {
     case "POST":
-      result = await Task.findOne({taskId: body.taskId});
-      if(!result){
-        return res.status(400).json({ message: "the task doesn't exist"});
-      }
       result = await Relation.findOne(relation);
       if(result){
         return res.status(400).json({ message: "the relation already exists"});
