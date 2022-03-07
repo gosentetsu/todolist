@@ -4,6 +4,20 @@ import { Calendar } from 'react-vant';
 
 export default function Schedule(props) {
   const { changeDate } = props;
+
+  const formatter = (day) => {
+    const year = day.date.getYear() + 1900;
+    const month = day.date.getMonth() + 1;
+    const date = day.date.getDate();
+    const today = new Date(new Date()).toLocaleDateString().split('/');
+    if (year == today[0] && month == today[1] && date == today[2]) {
+      day.text = "今天";
+      day.className = "red";
+    }
+
+    return day;
+
+  }
   
   return (  
     <Calendar
@@ -13,6 +27,7 @@ export default function Schedule(props) {
     style={{ height: 450 }}
     showConfirm={false}
     poppable={false}
+    formatter={formatter}
     onSelect={(date) => {
       changeDate(date);
     }}  
