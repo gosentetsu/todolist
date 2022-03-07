@@ -7,16 +7,15 @@ import TodoListCard from "../components/TodoListCard"
 export default function Schedule() {
   const [date, useDate] = useState(new Date(new Date()).toLocaleDateString());
   const router = useRouter();
-  const testItem = {
-    taskId: "taskId",
-    content: "待办事项内容",
-    comment: "备注",
-    tag: "标签",
-    status: false,
-    beginTime: "beginDate",
-    endTime: "endDate",
-    coUsers: [],
-  };
+  const getTasks = () => {
+    fetch("http://localhost:3000/api/tasks/U_YEAu7W",{method:'GET'})
+    .then((response) => response.json()) 
+    .then((responseData) => {
+      console.log(responseData); 
+    })
+  }
+  getTasks();
+
   const changeDate = (date) => {
     useDate(date.toLocaleDateString());
   }
@@ -24,7 +23,7 @@ export default function Schedule() {
   return (
     <Layout>
       <AgendaScreen changeDate={changeDate} />
-      <TodoListCard content={Array(3).fill(testItem)} header={date} />
+      {/* <TodoListCard content={} header={date} /> */}
       <Button type="primary" block round onClick={()=>{router.push({pathname:"/add", query:{initdate: date},})}}>
         添加待办
       </Button>

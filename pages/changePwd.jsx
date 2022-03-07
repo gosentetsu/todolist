@@ -3,12 +3,14 @@ import { useRouter } from "next/router";
 import {
   Field, Button, Cell
 } from 'react-vant';
+import NavBarCard from "../components/NavBarCard";
 
 export default function ChangePwd() {
   const [phone, setPhone] = useState('');
   const router = useRouter();
   return (
     <div>
+      <NavBarCard title="修改密码" path="/center" />
       <Cell.Group>
         <Field
           required
@@ -47,11 +49,6 @@ export default function ChangePwd() {
           </Button>
       </div>
 
-      <div style={{ margin: '16px 16px 0' }}>
-          <Button round nativeType="submit" type="primary" block size = "mini" onClick={()=>{router.push("/center")}}>
-            返回
-          </Button>
-      </div>
     </div>
   );
 }

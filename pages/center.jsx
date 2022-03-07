@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { Arrow, Edit } from '@react-vant/icons';
-import { Card, Image, Button, Toast, Space, Cell } from 'react-vant';
+import { Card, Image, Button, Toast, Space, Cell, Divider } from 'react-vant';
 import Layout from "../components/Layout";
 export default function Center() {
   const users = {
@@ -15,45 +15,58 @@ export default function Center() {
  return (
     <Layout>
       <Card style={{ marginBottom: 20 }}>
-        <Card.Cover onClick={() => Toast.info('点击了Cover区域')}>
-          <Image src="https://mir-s3-cdn-cf.behance.net/project_modules/max_632/274faa127009547.61390144590a7.png" width = "100" height = "100" round style={{ margin: '0px 126px 0' }}/>
+        <Card.Cover onClick={() => Toast.info('点击了Cover区域')} border>
+          
+          <Cell
+            style={{ marginTop: 15 }}
+            size = "large"
+            title="coderfan"
+            label="ID: 20220316"
+            icon={
+              <Image
+                width={65}
+                height={65}
+                src="https://cdn.jsdelivr.net/gh/3lang3/react-vant@main/public/home-music-card-1.jpg"
+              />
+            }
+          />
         </Card.Cover>
-        <Card.Header extra={<Arrow />} onClick={() => Toast.info('点击了Header区域')}>
-          {users.userName}
+        <Card.Header onClick={() => Toast.info('点击了Header区域')} border>
+          个性签名
         </Card.Header>
-        <Card.Body onClick={() => Toast.info('点击了Body区域')} style={{
-          height: '10vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-          {users.slogan}
+        <Card.Body
+          style={{
+            height: '20vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          我是小妖怪，逍遥又自在
         </Card.Body>
-        <Card.Footer>
+        <Card.Footer border>
           <Space>
-            <Button
-              type = 'primary'
-              icon={<Edit  />}
-              size="small"
-              onClick={()=>{router.push("/changeCenter")}}
-            >
+            <Button round size="small" icon = {<Edit color="black" fontSize = "40px"/> } iconPosition="left" onClick={()=>{router.push("/changeCenter")}}>
+              修改
             </Button>
+            
           </Space>
         </Card.Footer>
       </Card>
+      
 
       <Cell title="修改密码" isLink onClick={()=>{router.push("/changePwd")}}/>
       <Cell title="使用帮助" isLink onClick={()=>{router.push("/help")}}/>
       <Cell title="问题反馈" isLink onClick={()=>{router.push("/connect")}}/>
 
-      <div style={{ margin: '8px 0px 0' }}>
-        <Button square type="primary" block size = "small"  onClick={()=>{router.push("/login")}}>
+      <div style={{ margin: '20px 0px 0' }}>
+        <Button square block size = "small"  onClick={()=>{router.push("/login")}}>
           退出登录
         </Button>
       </div>
 
       <div style={{ margin: '8px 0px 0' }}>
-        <Button square type="primary" block size = "small" color="linear-gradient(to right, #ff6034, #ee0a24)">
+        <Button square block size = "small" >
           注销账户
         </Button>
       </div>
