@@ -2,7 +2,7 @@ import React from "react";
 import { List, Checkbox, Tag } from "antd-mobile";
 
 export default function TodoListCard(props) {
-  let { content, header } = props;
+  let { content, header, onItemChange } = props;
   return (
     <div>
       <List mode="card" header={header}>
@@ -15,7 +15,12 @@ export default function TodoListCard(props) {
               </Tag>
             }
             description={item.comment}
-            prefix={<Checkbox defaultChecked={item.status} />}
+            prefix={
+              <Checkbox
+                defaultChecked={item.status}
+                onChange={(val) => onItemChange(item, val)}
+              />
+            }
           >
             {item.content}
           </List.Item>

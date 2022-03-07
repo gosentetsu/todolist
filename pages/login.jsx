@@ -1,7 +1,8 @@
 import React from "react";
-import { Form, Input, Button, Space, Toast } from "antd-mobile";
+import { Form, Input, Button, Toast, Dialog } from "antd-mobile";
 import { useRouter } from "next/router";
-
+import { useDispatch } from "react-redux";
+import { setInfo } from "../app/features/user/userSlice";
 export default function Login() {
   const router = useRouter();
   function login(values) {
@@ -11,7 +12,7 @@ export default function Login() {
       body: JSON.stringify(values),
     };
 
-    fetch("http://localhost:3000/api/users/login", options)
+    fetch("/api/users/login", options)
       .then((response) => response.json())
       .then((res) => {
         let { message } = res;

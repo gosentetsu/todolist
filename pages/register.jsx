@@ -10,7 +10,7 @@ export default function Register() {
       body: JSON.stringify(values),
     };
 
-    fetch("http://localhost:3000/api/users", options)
+    fetch("/api/users", options)
       .then((response) => response.json())
       .then((res) => {
         let { message } = res;
