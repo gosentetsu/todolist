@@ -13,7 +13,6 @@ export default async function handler(req, res) {
       if (!user) {
         return res.status(400).json({ message: "the user doesn't exist" });
       }
-<<<<<<< HEAD
       if (body.password !== user.password) {
         return res.status(400).json({ message: "password error" });
       }
@@ -35,29 +34,6 @@ export default async function handler(req, res) {
         }),
       ]);
       res.status(200).json({
-=======
-      let token = generateToken(user.userId, 24);  // 第二个参数是过期时间
-      res.setHeader(
-        "Set-Cookie",
-        [
-          cookie.serialize("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
-            maxAge: 24 * 60 * 60,
-            sameSite: "strict",
-            path: "/",
-          }),
-          cookie.serialize("userId", user.userId, {
-            httpOnly: false,
-            secure: process.env.NODE_ENV !== "development",
-            maxAge: 24 * 60 * 60,
-            sameSite: "strict",
-            path: "/",
-          })
-        ]
-      );
-      res.status(200).json({ 
->>>>>>> 7b5c32d974fd458c3ba4ea707e991e74f8f0ecea
         message: "success",
         entity: { userId: user.userId },
       });

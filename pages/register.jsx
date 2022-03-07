@@ -10,11 +10,7 @@ export default function Register() {
       body: JSON.stringify(values),
     };
 
-<<<<<<< HEAD
     fetch("/api/users", options)
-=======
-    fetch("http://localhost:3000/api/users", options)
->>>>>>> 7b5c32d974fd458c3ba4ea707e991e74f8f0ecea
       .then((response) => response.json())
       .then((res) => {
         let { message } = res;

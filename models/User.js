@@ -13,8 +13,4 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-<<<<<<< HEAD
 export default mongoose.models.User || mongoose.model("User", UserSchema);
-=======
-export default mongoose.models.User ||  mongoose.model("User", UserSchema);
->>>>>>> 7b5c32d974fd458c3ba4ea707e991e74f8f0ecea
