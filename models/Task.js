@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 const TaskSchema = new mongoose.Schema({
   taskId: String,
   content: String,
-  comment: String,
+  importance: Number,
   tag: String,
-  status: String,
+  status: Boolean,
   beginTime: Date,
   endTime: Date
 }, {
