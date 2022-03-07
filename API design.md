@@ -17,9 +17,9 @@
 {
   taskId: String,  // T_开头，后面是随机6位字母+数字
   content: String,
-  comment: String,  //备注，标注待办事项的重要性
+  importance: Number,  //标注待办事项的重要性，范围1-5，数值越大越重要
   tag: String,  //标签，按标签给待办事项分类
-  status: String,  //状态，待办事项是否完成
+  status: Boolean,  //状态，待办事项是否完成
   beginTime: Date,
   endTime: Date
 }
@@ -186,9 +186,9 @@
         {
           taskId: String,
           content: String,
-          comment: String,
+          importance: Number,
           tag: String,
-          status: String,
+          status: Boolean,
           beginTime: Date,
           endTime: Date
         },
@@ -206,7 +206,7 @@
   ```javascript
   {
     content: String,
-    comment: String,
+    importance: Number,
     tag: String,
     beginTime: Date,
     endTime: Date
@@ -262,9 +262,9 @@
   {
     taskId: String,
     content: String,
-    comment: String,
+    importance: Number,
     tag: String,
-    status: String,
+    status: Boolean,
     beginTime: Date,
     endTime: Date
   }
@@ -300,8 +300,7 @@
   ```javascript
   {
     taskId: String,  // 要操作的待办事项id
-    userId: String,
-    coworkerId: String  // 合作者的userId
+    coworkerUserName: String  // 合作者的userName
   }
   ```
 
@@ -316,13 +315,7 @@
   {
     code: 400,
     data: {
-      message: "the task doesn't belong to you"  // 操作的待办事项不属于userId对应的用户
-    }
-  }
-  {
-    code: 400,
-    data: {
-      message: "the task doesn't exist"  // 提供的taskId不存在
+      message: "the user doesn't exist"  // 提供的UserName不存在
     }
   }
   {
@@ -341,8 +334,7 @@
   ```javascript
   {
     taskId: String,  // 要操作的待办事项id
-    userId: String,
-    coworkerId: String  // 合作者的userId
+    coworkerUserName: String  // 合作者的UserName
   }
   ```
 
@@ -352,12 +344,6 @@
     code: 200,
     data: {
       message: "success"
-    }
-  }
-  {
-    code: 400,
-    data: {
-      message: "the task doesn't belong to you"  // 操作的待办事项不属于userId对应的用户
     }
   }
   {
