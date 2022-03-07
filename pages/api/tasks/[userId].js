@@ -2,6 +2,7 @@ import dbConnect from "../../../lib/dbConnect";
 import Task from "../../../models/Task";
 import Relation from "../../../models/Relation";
 import verifyToken from "../../../lib/verifyToken"
+import checkAttr from "../../../lib/checkAttributes"
 /**
  * @swagger
  * /api/tasks/[userId]:
@@ -20,7 +21,7 @@ export default async function handler(req, res) {
     body,
     cookies
   } = req;
-  let result, task, relation, taskId;
+  let result, task, relation, taskId, check_result;
   let idLength = 6;
   let idChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -46,6 +47,11 @@ export default async function handler(req, res) {
       });
       break;
     case "POST":
+      check_result = checkAttr(body, ["content", "importance", "tag", "beginTime", "endTime"], true);
+      if(!check_result){
+        return res.status(400).json({ message: "wrong attributes"});
+      }
+      
       while(true){
         taskId = "T_";
         for(let i = 0; i < idLength; i++){
@@ -59,9 +65,9 @@ export default async function handler(req, res) {
       
       task = {
         taskId: taskId,
-        status: "not complete",
+        status: false,
         content: body.content,
-        comment: body.comment,
+        importance: body.importance,
         tag: body.tag,
         beginTime: body.beginTime,
         endTime: body.endTime,
@@ -80,6 +86,11 @@ export default async function handler(req, res) {
       });
       break;
     case "PUT":
+      check_result = checkAttr(body, ["taskId", "content", "importance", "tag", "status", "beginTime", "endTime"], false);
+      if(!check_result){
+        return res.status(400).json({ message: "wrong attributes"});
+      }
+      
       if(!body.taskId){
         return res.status(400).json({ message: "taskId is required"});
       }
@@ -90,6 +101,11 @@ export default async function handler(req, res) {
       res.status(200).json({ message: "success"});
       break;
     case "DELETE":
+      check_result = checkAttr(body, ["taskId"], true);
+      if(!check_result){
+        return res.status(400).json({ message: "wrong attributes"});
+      }
+
       result = await Task.deleteOne({taskId: body.taskId});
       if(result.deletedCount !== 1){
         return res.status(400).json({ message: "delete failed"});
