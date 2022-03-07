@@ -1,4 +1,5 @@
 # 数据库设计
+
 ## User
 
 ```javascript
@@ -19,7 +20,7 @@
   content: String,
   comment: String,  //备注，标注待办事项的重要性
   tag: String,  //标签，按标签给待办事项分类
-  status: String,  //状态，待办事项是否完成
+  status: Boolean,  //状态，待办事项是否完成
   beginTime: Date,
   endTime: Date
 }
@@ -27,7 +28,7 @@
 
 ## Relation
 
-> user和task的关系表，n:m关系
+> user 和 task 的关系表，n:m 关系
 
 ```javascript
 {
@@ -38,15 +39,16 @@
 
 # 接口设计
 
-- 返回的message为null时，均是因为请求方法错误，以下不重复指出
+- 返回的 message 为 null 时，均是因为请求方法错误，以下不重复指出
 
-- 返回的message为please sign in时，是因为未提供token或token过期（有效期设定为24小时），以下不重复指出
+- 返回的 message 为 please sign in 时，是因为未提供 token 或 token 过期（有效期设定为 24 小时），以下不重复指出
 
 - `POST` `/api/users/login`
 
   > 认证并授权用户
 
   - body
+
   ```javascript
   {
     userName: String,
@@ -55,6 +57,7 @@
   ```
 
   - response
+
   ```javascript
   {
     code: 200,
@@ -81,9 +84,10 @@
 
 - `GET` `/api/users/userId`
 
-  > 根据userId查找用户
+  > 根据 userId 查找用户
 
   - response
+
   ```javascript
   {
     code: 200,
@@ -107,9 +111,10 @@
 
 - `PUT` `/api/users/userId`
 
-  > 修改userName、password或slogan
+  > 修改 userName、password 或 slogan
 
   - body
+
   ```javascript
   {
     slogan: String,  // 可选
@@ -120,6 +125,7 @@
   ```
 
   - response
+
   ```javascript
   {
     code: 200,
@@ -143,9 +149,10 @@
 
 - `POST` `/api/users`
 
-  > 往数据库中添加用户，用户注册的接口，不返回token，因此用户注册完毕后要进行登录操作
+  > 往数据库中添加用户，用户注册的接口，不返回 token，因此用户注册完毕后要进行登录操作
 
   - body
+
   ```javascript
   {
     userName: String,
@@ -154,6 +161,7 @@
   ```
 
   - response
+
   ```javascript
   {
     code: 200,
@@ -174,9 +182,10 @@
 
 - `GET` `/api/tasks/userId`
 
-  > 根据userId查找用户所有的task
+  > 根据 userId 查找用户所有的 task
 
   - response
+
   ```javascript
   {
     code: 200,
@@ -188,7 +197,7 @@
           content: String,
           comment: String,
           tag: String,
-          status: String,
+          status: Boolean,
           beginTime: Date,
           endTime: Date
         },
@@ -203,6 +212,7 @@
   > 往数据库中添加待办事项
 
   - body
+
   ```javascript
   {
     content: String,
@@ -214,6 +224,7 @@
   ```
 
   - response
+
   ```javascript
   {
     code: 200,
@@ -231,13 +242,15 @@
   > 从数据库中删除待办事项
 
   - body
+
   ```javascript
   {
-    taskId: String
+    taskId: String;
   }
   ```
 
   - response
+
   ```javascript
   {
     code: 200,
@@ -255,22 +268,24 @@
 
 - `PUT` `/api/tasks/userId`
 
-  > 修改task的各个值，所有属性均为可选值，在需要更新时添加
+  > 修改 task 的各个值，所有属性均为可选值，在需要更新时添加
 
   - body
+
   ```javascript
   {
     taskId: String,
     content: String,
     comment: String,
     tag: String,
-    status: String,
+    status: Boolean,
     beginTime: Date,
     endTime: Date
   }
   ```
 
   - response
+
   ```javascript
   {
     code: 200,
@@ -297,6 +312,7 @@
   > 给待办事项添加合作者
 
   - body
+
   ```javascript
   {
     taskId: String,  // 要操作的待办事项id
@@ -306,6 +322,7 @@
   ```
 
   - response
+
   ```javascript
   {
     code: 200,
@@ -338,6 +355,7 @@
   > 删除待办事项的合作者
 
   - body
+
   ```javascript
   {
     taskId: String,  // 要操作的待办事项id
@@ -347,6 +365,7 @@
   ```
 
   - response
+
   ```javascript
   {
     code: 200,

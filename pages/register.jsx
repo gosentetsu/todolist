@@ -1,15 +1,26 @@
 import React from "react";
-import { Space, Form, Input, Button } from "antd-mobile";
+import { Toast, Form, Input, Button } from "antd-mobile";
 import { useRouter } from "next/router";
 export default function Register() {
   const router = useRouter();
   function register(values) {
-    fetch("/api/users", {
+    const options = {
       method: "POST",
-      body: values,
-    })
-      .then((res) => res.json())
-      .then((res) => console.log(res));
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    };
+
+    fetch("/api/users", options)
+      .then((response) => response.json())
+      .then((res) => {
+        let { message } = res;
+        Toast.show({
+          content: message,
+        });
+        if (message === "success") {
+          router.push("/login");
+        }
+      });
   }
   return (
     <main className="center">

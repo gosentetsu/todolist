@@ -1,20 +1,28 @@
 import React from "react";
-import { Form, Input, Button, Space } from "antd-mobile";
+import { Form, Input, Button, Toast, Dialog } from "antd-mobile";
 import { useRouter } from "next/router";
-
+import { useDispatch } from "react-redux";
+import { setInfo } from "../app/features/user/userSlice";
 export default function Login() {
   const router = useRouter();
   function login(values) {
-    fetch("/api/users/login", {
+    const options = {
       method: "POST",
-      body: values,
-    })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    };
+
+    fetch("/api/users/login", options)
+      .then((response) => response.json())
       .then((res) => {
-        console.log(res);
-        return res.json();
-      })
-      .then((res) => console.log(res));
-    console.log(values);
+        let { message } = res;
+        Toast.show({
+          content: message,
+        });
+        if (message === "success") {
+          router.push("/home");
+        }
+      });
   }
   return (
     <main className="center">
