@@ -18,7 +18,7 @@ export default function Center({req}) {
     
   })
  }
- getUser();
+//  getUser();
 
  const router = useRouter();
  return (
