@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     body,
     cookies,
   } = req;
-  let result, task, relation, taskId;
+  let result, task, relation, taskId, check_result;
   let idLength = 6;
   let idChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -52,6 +52,7 @@ export default async function handler(req, res) {
           let ind = Math.floor(Math.random() * 62);
           taskId += idChar[ind];
         }
+
         // taskId查重
         result = await Task.findOne({ taskId: taskId });
         if (!result) break;
@@ -61,7 +62,7 @@ export default async function handler(req, res) {
         taskId: taskId,
         status: false,
         content: body.content,
-        comment: body.comment,
+        importance: body.importance,
         tag: body.tag,
         beginTime: body.beginTime,
         endTime: body.endTime,

@@ -2,6 +2,7 @@ import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
 import generateToken from "../../../lib/generateToken";
 import cookie from "cookie";
+import checkAttr from "../../../lib/checkAttributes"
 
 export default async function handler(req, res) {
   const { method, body } = req;
@@ -9,7 +10,12 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "POST":
-      let user = await User.findOne({ userName: body.userName });
+      let check_result = checkAttr(body, ["userName", "password"], true);
+      if(!check_result){
+        return res.status(400).json({ message: "wrong attributes"});
+      }
+
+      let user = await User.findOne({userName: body.userName});
       if (!user) {
         return res.status(400).json({ message: "the user doesn't exist" });
       }
