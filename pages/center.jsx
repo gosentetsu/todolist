@@ -3,12 +3,30 @@ import { useRouter } from "next/router";
 import {  Edit } from '@react-vant/icons';
 import { Card, Image, Button, Toast, Space, Cell, Divider } from 'react-vant';
 import Layout from "../components/Layout";
-export default function Center({req}) {
+
+// TODO need a better way to handle global userId
+export async function getServerSideProps({ req }) {
+  const { userId } = req.cookies;
+
+  //TODO do not use abslute path here, not an efficient way to call internal API route here
+
+  const res = await fetch("http://localhost:3000/api/users/" + userId, {
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  });
+  const data = await res.json();
+  return {
+    props: { data, userId }, // will be passed to the page component as props
+  };
+}
+
+export default function Center({userId}) {
 //  const {userId} = req.cookies;
  const [users, setUsers] = useState({})
  const newUsers = {}
  const getUser = () =>{
-  fetch("http://localhost:3000/api/users/user_01",{method:'GET'})
+  fetch("http://localhost:3000/api/users/" + userId,{method:'GET'})
   .then((response) => response.json()) 
   .then((responseData) => {
     // console.log(responseData.entity);
