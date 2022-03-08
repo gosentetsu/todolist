@@ -20,7 +20,6 @@ export default function AddCard(props){
     values.beginTime = new Date(values.calendar.split('/').join('-') + ' ' + values.beginTime);
     values.endTime = new Date(values.calendar.split('/').join('-') + ' ' + values.endTime);
     const { calendar, ...rest } = values;
-    console.log(rest)
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
