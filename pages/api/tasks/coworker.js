@@ -1,8 +1,8 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
 import Relation from "../../../models/Relation";
-import verifyToken from "../../../lib/verifyToken"
-import checkAttr from "../../../lib/checkAttributes"
+import verifyToken from "../../../lib/verifyToken";
+import checkAttr from "../../../lib/checkAttributes";
 
 export default async function handler(req, res) {
   const {
@@ -12,12 +12,12 @@ export default async function handler(req, res) {
   } = req;
 
   if(!cookies || !cookies.token || cookies.userId !== verifyToken(cookies.token)){
-    return res.status(400).json({ message: "please sign in"});
+    return res.status(200).json({ message: "please sign in"});
   }
 
   let check_result = checkAttr(body, ["taskId", "coworkerUserNam"], true);
   if(!check_result){
-    return res.status(400).json({ message: "wrong attributes"});
+    return res.status(200).json({ message: "wrong attributes"});
   }
 
   let result;
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
   let user = await User.findOne({taskId: body.coworkerUserNam});
   if(!user){
-    return res.status(400).json({ message: "the user doesn't exist"});
+    return res.status(200).json({ message: "the user doesn't exist"});
   }
   let relation = {
     taskId: body.taskId,
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     case "POST":
       result = await Relation.findOne(relation);
       if(result){
-        return res.status(400).json({ message: "the relation already exists"});
+        return res.status(200).json({ message: "the relation already exists"});
       }
 
       result = await Relation.create(relation);
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
     case "DELETE":
       result = await Relation.deleteOne(relation);
       if(result.deletedCount !== 1){
-        return res.status(400).json({ message: "delete failed"});
+        return res.status(200).json({ message: "delete failed"});
       }
 
       res.status(200).json({ message: "success"});

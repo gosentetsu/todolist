@@ -41,6 +41,8 @@
 
 - 返回的 message 为 null 时，均是因为请求方法错误，以下不重复指出
 
+- 返回的 message 为 wrong attributes 时，是因为传入的body中的参数和接口文档中定义的不匹配，以下不重复指出
+
 - 返回的 message 为 please sign in 时，是因为未提供 token 或 token 过期（有效期设定为 24 小时），以下不重复指出
 
 - `POST` `/api/users/login`
@@ -69,13 +71,13 @@
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "the user doesn't exist"  // 提供的userId有问题
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "password error"  // 提供的password有问题
     }
@@ -102,7 +104,7 @@
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "the user doesn't exist"  // 提供的userId有问题
     }
@@ -134,15 +136,36 @@
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "the user doesn't exist"  // 提供的userId有问题
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "password error"  // 旧密码输入错误
+    }
+  }
+  ```
+
+- `DELETE` `/api/users/userId`
+
+  > 删除 userId 对应的用户
+
+  - response
+
+  ```javascript
+  {
+    code: 200,
+    data: {
+      message: "success",
+    }
+  }
+  {
+    code: 200,
+    data: {
+      message: "delete failed"  // User表中查不到userId
     }
   }
   ```
@@ -173,7 +196,7 @@
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "the user name already exists"  // userName已经注册过
     }
@@ -259,7 +282,7 @@
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "delete failed"  // 各种原因导致了删除出错
     }
@@ -294,13 +317,13 @@
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "taskId is required"  // 未提供taskId
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "update failed"  // 信息更新出错
     }
@@ -330,13 +353,13 @@
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "the user doesn't exist"  // 提供的UserName不存在
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "the relation already exists"  // taskId和coworkerId的关系已存在
     }
@@ -366,7 +389,7 @@
     }
   }
   {
-    code: 400,
+    code: 200,
     data: {
       message: "delete failed"  // 各种原因导致了删除出错
     }

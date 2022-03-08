@@ -1,6 +1,6 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
-import checkAttr from "../../../lib/checkAttributes"
+import checkAttr from "../../../lib/checkAttributes";
 
 export default async function handler(req, res) {
   let result, userId, check_result;
@@ -12,13 +12,13 @@ export default async function handler(req, res) {
     case "POST":
       check_result = checkAttr(req.body, ["userName", "password"], true);
       if(!check_result){
-        return res.status(400).json({ message: "wrong attributes"});
+        return res.status(200).json({ message: "wrong attributes"});
       }
 
       // 用户名查重
       result = await User.findOne({userName: req.body.userName});
       if(result){
-        return res.status(400).json({ message: "the user name already exists"});
+        return res.status(200).json({ message: "the user name already exists"});
       }
 
       let idChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

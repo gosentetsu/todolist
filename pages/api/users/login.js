@@ -2,7 +2,7 @@ import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
 import generateToken from "../../../lib/generateToken";
 import cookie from "cookie";
-import checkAttr from "../../../lib/checkAttributes"
+import checkAttr from "../../../lib/checkAttributes";
 
 export default async function handler(req, res) {
   const { method, body } = req;
@@ -12,15 +12,15 @@ export default async function handler(req, res) {
     case "POST":
       let check_result = checkAttr(body, ["userName", "password"], true);
       if(!check_result){
-        return res.status(400).json({ message: "wrong attributes"});
+        return res.status(200).json({ message: "wrong attributes"});
       }
 
       let user = await User.findOne({userName: body.userName});
       if (!user) {
-        return res.status(400).json({ message: "the user doesn't exist" });
+        return res.status(200).json({ message: "the user doesn't exist" });
       }
       if (body.password !== user.password) {
-        return res.status(400).json({ message: "password error" });
+        return res.status(200).json({ message: "password error" });
       }
       let token = generateToken(user.userId, 24); // 第二个参数是过期时间
       res.setHeader("Set-Cookie", [
