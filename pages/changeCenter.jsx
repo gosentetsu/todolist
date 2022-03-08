@@ -8,7 +8,23 @@ import {
 } from 'react-vant';
 import NavBarCard from "../components/NavBarCard";
 
-export default function ChangeCenter() {
+export async function getServerSideProps({ req }) {
+  const { userId } = req.cookies;
+
+  //TODO do not use abslute path here, not an efficient way to call internal API route here
+
+  const res = await fetch("http://localhost:3000/api/users/" + userId, {
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  });
+  const data = await res.json();
+  return {
+    props: { data, userId }, // will be passed to the page component as props
+  };
+}
+
+export default function ChangeCenter({userId}) {
   const router = useRouter();
   function updateCenter(values){
     const options = {
@@ -17,7 +33,7 @@ export default function ChangeCenter() {
       body: JSON.stringify(values),
     };
 
-    fetch("http://localhost:3000/api/users/user_01", options)
+    fetch("http://localhost:3000/api/users/"+ userId, options)
       .then((response) => response.json())
       .then((res) => {
         let { message } = res;

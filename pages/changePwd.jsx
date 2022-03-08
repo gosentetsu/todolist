@@ -5,7 +5,23 @@ import {
 } from 'react-vant';
 import NavBarCard from "../components/NavBarCard";
 
-export default function ChangePwd() {
+export async function getServerSideProps({ req }) {
+  const { userId } = req.cookies;
+
+  //TODO do not use abslute path here, not an efficient way to call internal API route here
+
+  const res = await fetch("http://localhost:3000/api/users/" + userId, {
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  });
+  const data = await res.json();
+  return {
+    props: { data, userId }, // will be passed to the page component as props
+  };
+}
+
+export default function ChangePwd({userId}) {
   const router = useRouter();
   function updatePwd(values){
     const options = {
@@ -14,7 +30,7 @@ export default function ChangePwd() {
       body: JSON.stringify(values),
     };
 
-    fetch("http://localhost:3000/api/users/user_01", options)
+    fetch("http://localhost:3000/api/users/" + userId, options)
       .then((response) => response.json())
       .then((res) => {
         let { message } = res;
