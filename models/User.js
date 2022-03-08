@@ -7,8 +7,7 @@ const UserSchema = new mongoose.Schema(
     password: String,
     slogan: String,
     picUrl: String,
-  },
-  {
+  },{
     versionKey: false,
   }
 );

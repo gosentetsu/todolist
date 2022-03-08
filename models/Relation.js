@@ -4,11 +4,9 @@ const RelationSchema = new mongoose.Schema(
   {
     userId: String,
     taskId: String,
-  },
-  {
+  },{
     versionKey: false,
   }
 );
 
-export default mongoose.models.Relation ||
-  mongoose.model("Relation", RelationSchema);
+export default mongoose.models.Relation || mongoose.model("Relation", RelationSchema);

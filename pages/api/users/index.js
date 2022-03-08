@@ -28,6 +28,7 @@ export default async function handler(req, res) {
           let ind = Math.floor(Math.random()*62);
           userId += idChar[ind];
         }
+        
         // userId查重
         result = await User.findOne({userId: userId});
         if(!result) break;

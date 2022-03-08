@@ -1,6 +1,5 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
-import Task from "../../../models/Task";
 import Relation from "../../../models/Relation";
 import verifyToken from "../../../lib/verifyToken"
 import checkAttr from "../../../lib/checkAttributes"

@@ -3,17 +3,7 @@ import Task from "../../../models/Task";
 import Relation from "../../../models/Relation";
 import verifyToken from "../../../lib/verifyToken"
 import checkAttr from "../../../lib/checkAttributes"
-/**
- * @swagger
- * /api/tasks/[userId]:
- *   get:
- *     description: Returns task list according to userId
- *     responses:
- *       200:
- *         description: task[]
- *       400:
- *         description: error!
- */
+
 export default async function handler(req, res) {
   const {
     query: { userId },
@@ -58,6 +48,7 @@ export default async function handler(req, res) {
           let ind = Math.floor(Math.random()*62);
           taskId += idChar[ind];
         }
+        
         // taskId查重
         result = await Task.findOne({taskId: taskId});
         if(!result) break;

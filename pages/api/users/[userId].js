@@ -2,17 +2,7 @@ import dbConnect from "../../../lib/dbConnect";
 import User from "../../../models/User";
 import verifyToken from "../../../lib/verifyToken"
 import checkAttr from "../../../lib/checkAttributes"
-/**
- * @swagger
- * /api/users/[userId]:
- *   get:
- *     description: Returns a user
- *     responses:
- *       200:
- *         description: user
- *       400:
- *         description: error!
- */
+
 export default async function handler(req, res) {
   const {
     query: { userId },
