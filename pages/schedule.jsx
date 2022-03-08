@@ -1,29 +1,93 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Button } from 'react-vant';
+import { Button, Typography } from 'react-vant';
 import Layout from "../components/Layout";
 import AgendaScreen from "../components/AgendaScreen"
 import TodoListCard from "../components/TodoListCard"
-export default function Schedule() {
-  const [date, useDate] = useState(new Date(new Date()).toLocaleDateString());
-  const router = useRouter();
-  const getTasks = () => {
-    fetch("http://localhost:3000/api/tasks/U_YEAu7W",{method:'GET'})
-    .then((response) => response.json()) 
-    .then((responseData) => {
-      console.log(responseData); 
-    })
+
+export async function getServerSideProps({ req }) {
+  const { userId } = req.cookies;
+
+  const res = await fetch("http://localhost:3000/api/tasks/" + userId, {
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  });
+  const data = await res.json();
+  if (data.message !== "success") {
+    return {
+      redirect: {
+        destination: "/login",
+      },
+    };
   }
-  getTasks();
+  return {
+    props: { data, userId }, // will be passed to the page component as props
+  };
+}
+
+export default function Schedule({ data, userId }) {
+  const [date, useDate] = useState(new Date().toLocaleDateString());
+  const [lists, setLists] = useState(data.list);
+  const taskDays = new Set;
+  const router = useRouter();
+  function getAlltasks() {
+    fetch("/api/tasks/" + userId)
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.message === "success") setLists(response.list);
+      })
+      .catch((err) => console.error(err));
+  }
+  function changeTaskStatus(item, val) {
+    item.status = val;
+    const options = {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(item),
+    };
+    fetch("/api/tasks/" + userId, options)
+      .then((response) => response.json())
+      .then((response) => console.log(response))
+      .then(getAlltasks())
+      .catch((err) => console.error(err));
+  }
 
   const changeDate = (date) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useDate(date.toLocaleDateString());
+  }
+
+  const judgeTheSameDate = (date,string) => {
+    const dateList = date.slice(0,10).split('-').map(i=>(+i));
+    const stringList = string.split('/');
+    for(let i = 0;i < 3;i++) {
+      if (dateList[i] != stringList[i]) return false;
+    }
+    return true;
+  }
+  for(const i of lists) {
+    taskDays.add(i.beginTime.slice(0,10).split('-').map(i=>(+i)).toString())
   }
 
   return (
     <Layout>
-      <AgendaScreen changeDate={changeDate} />
-      {/* <TodoListCard content={} header={date} /> */}
+      <AgendaScreen changeDate={changeDate} taskDays={taskDays} />
+      <Typography.Title level={2} center="true">{date}</Typography.Title>
+      <TodoListCard
+        content={lists
+          .filter((i)=> judgeTheSameDate(i.beginTime, date))
+          .filter((i) => i.status === false)}
+        onItemChange={changeTaskStatus}
+        header="未完成的任务"
+      />
+      <TodoListCard
+        onItemChange={changeTaskStatus}
+        content={lists
+          .filter((i)=> judgeTheSameDate(i.beginTime, date))
+          .filter((i) => i.status === true)}
+        header="已完成的任务"
+      />
       <Button type="primary" block round onClick={()=>{router.push({pathname:"/add", query:{initdate: date},})}}>
         添加待办
       </Button>

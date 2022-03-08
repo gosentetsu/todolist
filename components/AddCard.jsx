@@ -3,9 +3,11 @@ import { useRouter } from "next/router";
 import { Form, Button, Field, Rate, Toast } from 'react-vant';
 import { CalendarItem, PickerItem, TimeItem } from '../components/CombinedItems.tsx';
 
+
+
 export default function AddCard(props){
   const [form] = Form.useForm();
-  const { initdate } = props;
+  const { initdate,userId } = props;
   const router = useRouter();
   const [minHour, setMinHour] = useState("00");
   const [minMinute, setMinMinute] = useState("00");
@@ -22,13 +24,12 @@ export default function AddCard(props){
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     };
-
-    fetch("http://localhost:3000/api/tasks/U_YEAu7W", options)
+    fetch("/api/tasks/" + userId, options)
       .then((response) => response.json())
       .then((res) => {
         let { message } = res;
         Toast.loading({
-          message: 'success',
+          message: message,
           forbidClick: true,
         });
         if (message === "success") {
@@ -89,7 +90,7 @@ export default function AddCard(props){
         <Field placeholder="请输入待办事项名称" />
       </Form.Item>
 
-      <Form.Item name="priority" label="优先级" initialValue={3}>
+      <Form.Item name="importance" label="优先级" initialValue={3}>
         <Rate />
       </Form.Item>
 
@@ -123,10 +124,6 @@ export default function AddCard(props){
         <TimeItem placeholder="选择结束日期" minHour={minHour} minMinute={minMinute} maxHour="23" maxMinute="59" changeTime={changeMaxTime} changeMinute={changeMinMinute} tag="0" changeTempTime={changeTempMaxMinute} temp={tempMinMinute} />
       </Form.Item>
 
-
-      <Form.Item name="comment" label="备注">
-        <Field rows={3} autosize type="note" maxlength={140} showWordLimit />
-      </Form.Item>
     </Form>
   )
 }
