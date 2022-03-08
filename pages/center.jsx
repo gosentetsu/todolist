@@ -21,9 +21,18 @@ export async function getServerSideProps({ req }) {
   };
 }
 
-export default function Center({data}) {
+export default function Center({data, userId}) {
 //  const {userId} = req.cookies;
  const router = useRouter();
+ function deleteUser(){
+  fetch("http://localhost:3000/api/users/" + userId,{method:'DELETE'})
+  .then((response) => response.json()) 
+  .then((responseData) => {
+    // console.log(responseData.entity);
+    console.log(responseData)
+    router.push("/login")
+  })
+ }
  return (
     <Layout >
       <Card style={{ marginBottom: 20 }}>
@@ -78,7 +87,7 @@ export default function Center({data}) {
       </div>
 
       <div style={{ margin: '8px 0px 0' }}>
-        <Button square block size = "small" >
+        <Button square block size = "small" onClick = {deleteUser}>
           注销账户
         </Button>
       </div>
