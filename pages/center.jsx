@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import {  Edit } from '@react-vant/icons';
 import { Card, Image, Button, Toast, Space, Cell, Divider } from 'react-vant';
@@ -21,39 +21,24 @@ export async function getServerSideProps({ req }) {
   };
 }
 
-export default function Center({userId}) {
+export default function Center({data}) {
 //  const {userId} = req.cookies;
- const [users, setUsers] = useState({})
- const newUsers = {}
- const getUser = () =>{
-  fetch("http://localhost:3000/api/users/" + userId,{method:'GET'})
-  .then((response) => response.json()) 
-  .then((responseData) => {
-    // console.log(responseData.entity);
-    newUsers = responseData.entity;
-   
-    setUsers(newUsers)
-    
-  })
- }
-//  getUser();
-
  const router = useRouter();
  return (
-    <Layout>
+    <Layout >
       <Card style={{ marginBottom: 20 }}>
-        <Card.Cover onClick={() => Toast.info('点击了Cover区域')} border>
+        <Card.Cover border>
           
           <Cell
             style={{ marginTop: 15 }}
             size = "large"
-            title= {users.userName}
-            label={"ID：" + users.userId}
+            title= {data.entity.userName}
+            label={"ID：" + data.entity.userId}
             icon={
               <Image
                 width={65}
                 height={65}
-                src={users.picUrl}
+                src={data.entity.picUrl}
               />
             }
           />
@@ -69,7 +54,7 @@ export default function Center({userId}) {
             alignItems: 'center',
           }}
         >
-          {users.slogan}
+          {data.entity.slogan}
         </Card.Body>
         <Card.Footer border>
           <Space>
