@@ -19,10 +19,12 @@ export default function AddCard(props){
   const addTask = (values) => {
     values.beginTime = new Date(values.calendar.split('/').join('-') + ' ' + values.beginTime);
     values.endTime = new Date(values.calendar.split('/').join('-') + ' ' + values.endTime);
+    const { calendar, ...rest } = values;
+    console.log(rest)
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify(rest),
     };
     fetch("/api/tasks/" + userId, options)
       .then((response) => response.json())
