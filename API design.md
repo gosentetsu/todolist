@@ -21,8 +21,8 @@
   importance: Number,  //标注待办事项的重要性，范围1-5，数值越大越重要
   tag: String,  //标签，按标签给待办事项分类
   status: Boolean,  //状态，待办事项是否完成
-  beginTime: Date,
-  endTime: Date
+  beginTime: Number,
+  endTime: Number
 }
 ```
 
@@ -80,6 +80,24 @@
     code: 200,
     data: {
       message: "password error"  // 提供的password有问题
+    }
+  }
+  ```
+
+- `GET` `/api/users/logout`
+
+  > 注销登录
+
+  - response
+
+  ```javascript
+  {
+    code: 200,
+    data: {
+      message: "success",
+      entity: {
+        userId: String
+      }
     }
   }
   ```

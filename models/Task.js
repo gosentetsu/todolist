@@ -6,8 +6,8 @@ const TaskSchema = new mongoose.Schema({
   importance: Number,
   tag: String,
   status: Boolean,
-  beginTime: Date,
-  endTime: Date
+  beginTime: Number,
+  endTime: Number
 }, {
   versionKey: false
 });
