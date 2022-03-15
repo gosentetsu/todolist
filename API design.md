@@ -86,7 +86,22 @@
 
 - `GET` `/api/users/logout`
 
-  > 注销登录
+  > 取消登录
+
+  - response
+
+  ```javascript
+  {
+    code: 200,
+    data: {
+      message: "success"
+    }
+  }
+  ```
+
+- `POST` `/api/users/upload`
+  > 在form标签上加上固定写法的属性为enctype="multipart/form-data"，否则文件或图片会上传失败<br>
+  > 其中\<input type="file" name="xxx">，当中的name属性一定要赋值
 
   - response
 
@@ -96,11 +111,20 @@
     data: {
       message: "success",
       entity: {
-        userId: String
+        picUrl: String
       }
     }
   }
-  ```
+  {
+    code: 200,
+    data: {
+      message: "fail to upload"  // 因为各种异常导致未上传成功
+  }
+  {
+    code: 200,
+    data: {
+      message: "please upload a file"  // 未传递文件
+  }
 
 - `GET` `/api/users/userId`
 
