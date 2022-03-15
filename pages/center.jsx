@@ -74,6 +74,7 @@ export default function Center({data, userId}) {
                 width={65}
                 height={65}
                 src={data.entity.picUrl}
+                onClick = {()=>{router.push("/changePic")}}
               />
             }
           />

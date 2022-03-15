@@ -57,10 +57,11 @@ export default function ChangeCenter({userId}) {
         }
       >
       
-        <Form.Item
+        {/* <Form.Item
           
           label="头像"
-          
+          name = "uploader"
+          rules={[{ required: true, message: '请选择文件' }]}
           initialValue={[
             {
               url: 'https://img.yzcdn.cn/vant/sand.jpg',
@@ -70,7 +71,7 @@ export default function ChangeCenter({userId}) {
           ]}
         >
           <Uploader />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item name="userName" label="用户名" rules={[{ required: true, message: '用户名不能为空' }]}>
           <Field
               required
