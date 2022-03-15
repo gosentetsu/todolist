@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from "next/router";
 import {
-  Field, Button, Toast, Form
+  Field, Button, Notify, Form
 } from 'react-vant';
 import NavBarCard from "../components/NavBarCard";
 
@@ -34,9 +34,17 @@ export default function ChangePwd({userId}) {
       .then((response) => response.json())
       .then((res) => {
         let { message } = res;
-        console.log(message)
-        if (message === "success") {
+        if (message == "success"){
+          Notify.show({
+            type:'primary',
+            message
+          });
           router.push("/login");
+        }else{
+          Notify.show({
+            type:'warning',
+            message
+          });
         }
       });
   }
@@ -63,7 +71,7 @@ export default function ChangePwd({userId}) {
         name="password"
         label="原密码"
       >
-        <Field placeholder="请输入新密码" type = "password"/>
+        <Field placeholder="请输入原密码" type = "password"/>
       </Form.Item>
       <Form.Item rules={[{ required: true, message: '请填写新密码' }]} name="newPass" label="新密码">
         <Field placeholder="请输入新密码" type = "password"/>

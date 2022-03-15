@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import {  Edit } from '@react-vant/icons';
-import { Card, Image, Button, Toast, Space, Cell, Divider } from 'react-vant';
+import { Card, Image, Button, Notify, Space, Cell, Dialog } from 'react-vant';
 import Layout from "../components/Layout";
 
 // TODO need a better way to handle global userId
@@ -25,7 +25,32 @@ export default function Center({data, userId}) {
 //  const {userId} = req.cookies;
  const router = useRouter();
  function deleteUser(){
-  fetch("http://localhost:3000/api/users/" + userId,{method:'DELETE'})
+  Dialog.confirm({
+    title: '确认注销',
+    message: '注销后，所有的数据信息都将清空，是否继续？',
+  })
+    .then(() => {
+      console.log('confirm');
+      fetch("http://localhost:3000/api/users/" + userId,{method:'DELETE'})
+      .then((response) => response.json()) 
+      .then((responseData) => {
+        // console.log(responseData.entity);
+        let { message } = responseData;
+        Notify.show({
+          type:'primary',
+          message
+        });
+        router.push("/login")
+      })
+    })
+    .catch(() => {
+      console.log('catch');
+    })
+  
+ }
+
+ function logoutUser(){
+  fetch("http://localhost:3000/api/users/logout",{method:'GET'})
   .then((response) => response.json()) 
   .then((responseData) => {
     // console.log(responseData.entity);
@@ -33,6 +58,7 @@ export default function Center({data, userId}) {
     router.push("/login")
   })
  }
+
  return (
     <Layout >
       <Card style={{ marginBottom: 20 }}>
@@ -81,7 +107,7 @@ export default function Center({data, userId}) {
       <Cell title="问题反馈" isLink onClick={()=>{router.push("/connect")}}/>
 
       <div style={{ margin: '20px 0px 0' }}>
-        <Button square block size = "small"  onClick={()=>{router.push("/login")}}>
+        <Button square block size = "small"  onClick={logoutUser}>
           退出登录
         </Button>
       </div>
