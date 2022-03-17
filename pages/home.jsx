@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import TodoListCard from "../components/TodoListCard";
-
+import _ from "lodash";
 // TODO need a better way to handle global userId
 export async function getServerSideProps({ req }) {
   const { userId } = req.cookies;
@@ -37,14 +37,23 @@ export default function Home({ data, userId }) {
       })
       .catch((err) => console.error(err));
   }
+
   function changeTaskStatus(item, val) {
+    item = _.pick(item, [
+      "taskId",
+      "content",
+      "importance",
+      "tag",
+      "status",
+      "beginTime",
+      "endTime",
+    ]);
     item.status = val;
     const options = {
       method: "PUT",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(item),
     };
-
     fetch("/api/tasks/" + userId, options)
       .then((response) => response.json())
       .then((response) => console.log(response))
