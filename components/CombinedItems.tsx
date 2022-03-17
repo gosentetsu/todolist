@@ -6,17 +6,7 @@ type CustomItemProps = {
   value?: any;
   onChange?: (v: any) => void;
   placeholder?: string;
-  minHour?: any;
-  maxHour?: any;
-  minMinute?: any;
-  maxMinute?: any;
-  hour?: any;
-  minute?: any;
-  changeTime?: any;
-  changeMinute?: any;
-  tag?: any;
-  changeTempTime?: any;
-  temp?: any;
+  initdate?: any;
 } & FormItemProps;
 
 export function PickerItem(props: CustomItemProps) {
@@ -68,27 +58,8 @@ export function CalendarItem(props: CustomItemProps) {
 }
 
 export function TimeItem(props: CustomItemProps) {
-  const { value, onChange, minHour, maxHour, minMinute, maxMinute, changeTime, changeMinute,tag,changeTempTime, temp, ...fieldProps } = props;
+  const { value, onChange, initdate, ...fieldProps } = props;
   const [visible, setVisible] = useState(false);
-  
-  const onChangeTime = (val)=>{
-    onChange(val);
-    if (tag == "0") {
-      if (val.slice(0,2) == minHour) {
-        changeMinute(temp);
-      }else {
-        changeMinute("00");
-      }
-    }
-    if (tag == "1") {
-      if (val.slice(0,2) == maxHour) {
-        changeMinute(temp);
-      }else {
-        changeMinute("59");
-      }
-    }
-  }
-
 
   const onShow = () => {
     setVisible(true);
@@ -97,8 +68,6 @@ export function TimeItem(props: CustomItemProps) {
     setVisible(false);
   };
   const onConfirm = (val) => {
-    changeTime(val);
-    changeTempTime(val.slice(3,5));
     onChange(val);
     onCancel();
   };
@@ -108,16 +77,14 @@ export function TimeItem(props: CustomItemProps) {
       <Field isLink readonly {...fieldProps} value={value} onClick={onShow} />
       <Popup position="bottom" round visible={visible} onClose={onCancel}>
         <DatetimePicker
-        title="选择时间"
-         type="time" 
-         minHour={minHour} 
-         minMinute={minMinute} 
-         maxHour={maxHour} 
-         maxMinute={maxMinute}
-         onChange={onChangeTime}
-         onConfirm={onConfirm} 
-         onCancel={onCancel} 
-         value="12:00" />
+          title="选择时间"
+          type="datetime" 
+          minDate={new Date(initdate.split('/').join('-'))}
+          maxDate={new Date(2030, 0, 31)}
+          onConfirm={onConfirm} 
+          onCancel={onCancel} 
+          
+          value="12:00" />
       </Popup>
     </>
   );
