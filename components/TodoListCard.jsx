@@ -6,7 +6,9 @@ export default function TodoListCard(props) {
   return (
     <div>
       <List mode="card" header={header}>
-        {content.length === 0 && <Empty description="暂无数据" />}
+        {content.length === 0 && (
+          <Empty description="暂无数据" imageStyle={{ height: "1rem" }} />
+        )}
         {content.map((item) => (
           <List.Item
             key={item.taskId}
