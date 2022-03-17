@@ -2,6 +2,8 @@ import formidable from "formidable";
 import path from "path";
 import fs from "fs";
 import verifyToken from "../../../lib/verifyToken"
+import User from "../../../models/User";
+import dbConnect from "../../../lib/dbConnect";
 
 export const config = {
   api: {
@@ -22,13 +24,15 @@ function getIPAddress(){
   }
 }
 
-export default async (req, res) => {
+export default async function handler (req, res){
   const {
     method,
     cookies
   } = req;
   const userId = cookies.userId;
 
+  await dbConnect();
+  
   if(!cookies || !cookies.token || userId !== verifyToken(cookies.token)){
     return res.status(200).json({ message: "please sign in"});
   }
@@ -49,18 +53,19 @@ export default async (req, res) => {
         }
       });
 
-      form.on('file', (formName, file) => {
+      form.on('file', async (formName, file) => {
         const fileName = file.newFilename;
         const extName = path.extname(file.originalFilename);
         const oldPath = path.join(fileDir, fileName);
         const newPath = path.join(fileDir, userId + extName);
         fs.rename(oldPath, newPath,function(err){});
 
+        const picUrl = `http://${getIPAddress()}:3000/images/${userId}${extName}` ;
+        await User.updateOne({userId: userId}, {$set: {picUrl: picUrl}});
+
         res.status(200).json({ 
           message: "success",
-          entity: {
-            picUrl: `http://${getIPAddress()}:3000/images/${userId}${extName}` 
-          }
+          entity: { picUrl: picUrl }
         });
       });
       
