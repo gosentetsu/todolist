@@ -10,26 +10,32 @@ export default function Connect() {
   function upload(values) {
     const file = values.uploader[0].file;
     const formData = new FormData()
-    // console.log(file)
+    console.log(file)
     // console.log(formData)
     formData.append("file", file)
     // console.log(formData)
     const options = {
       method: "POST",
-      headers: { "Content-Type": "multipart/form-data" },
+      // headers: { "Content-Type": "multipart/form-data;" },
       body: formData,
     };
 
     fetch("/api/users/upload", options)
       .then((response) => response.json())
       .then((res) => {
-
+        console.log(res)
         let { message } = res;
-        Notify.show({
-          message
-        })
-        if (message === "success") {
+        if (message == "success"){
+          Notify.show({
+            type:'primary',
+            message
+          });
           router.push("/center");
+        }else{
+          Notify.show({
+            type:'warning',
+            message
+          });
         }
       });
   }
