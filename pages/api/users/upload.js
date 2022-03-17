@@ -48,9 +48,6 @@ export default async function handler (req, res){
         if(err){
           return res.status(200).json({ message: "fail to upload" });
         }
-        if(!files[""]){
-          return res.status(200).json({ message: "please upload a file" });
-        }
       });
 
       form.on('file', async (formName, file) => {
