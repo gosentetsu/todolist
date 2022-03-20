@@ -4,6 +4,7 @@ const RelationSchema = new mongoose.Schema(
   {
     userId: String,
     taskId: String,
+    acknowledge: Boolean
   },{
     versionKey: false,
   }

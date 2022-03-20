@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const TaskSchema = new mongoose.Schema({
   taskId: String,
+  adminId: String,
   content: String,
   importance: Number,
   tag: String,
