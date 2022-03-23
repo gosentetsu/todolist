@@ -17,6 +17,7 @@
 ```javascript
 {
   taskId: String,  // T_开头，后面是随机6位字母+数字
+  adminId: String  // task的创建者id，拥有对合作任务以及合作关系的处置权
   content: String,
   importance: Number,  //标注待办事项的重要性，范围1-5，数值越大越重要
   tag: String,  //标签，按标签给待办事项分类
@@ -33,7 +34,8 @@
 ```javascript
 {
   userId: String,
-  taskId: String
+  taskId: String,
+  acknowledge: Boolean  // 新的合作任务是否被接受，未接受时可以删除该合作关系
 }
 ```
 
@@ -44,6 +46,8 @@
 - 返回的 message 为 wrong attributes 时，是因为传入的body中的参数和接口文档中定义的不匹配，以下不重复指出
 
 - 返回的 message 为 please sign in 时，是因为未提供 token 或 token 过期（有效期设定为 24 小时），以下不重复指出
+
+- 返回的 message 为 you don't have permission 时，是因为用户更新、删除了不是该用户创建的task以及relation，以下不重复指出
 
 - `POST` `/api/users/login`
 
@@ -120,7 +124,31 @@
       message: "fail to upload"  // 因为各种异常导致未上传成功
   }
 
-- `GET` `/api/users/userId`
+- `GET` `/api/users/name/[userName]`
+
+  > 根据 userName 查找 userId
+
+  - response
+
+  ```javascript
+  {
+    code: 200,
+    data: {
+      message: "success",
+      entity: {
+        userId: String
+      }
+    }
+  }
+  {
+    code: 200,
+    data: {
+      message: "the user doesn't exist"  // 提供的userName有问题
+    }
+  }
+  ```
+
+- `GET` `/api/users/[userId]`
 
   > 根据 userId 查找用户
 
@@ -147,7 +175,7 @@
   }
   ```
 
-- `PUT` `/api/users/userId`
+- `PUT` `/api/users/[userId]`
 
   > 修改 userName、password 或 slogan
 
@@ -185,7 +213,7 @@
   }
   ```
 
-- `DELETE` `/api/users/userId`
+- `DELETE` `/api/users/[userId]`
 
   > 删除 userId 对应的用户
 
@@ -239,7 +267,71 @@
   }
   ```
 
-- `GET` `/api/tasks/userId`
+- `GET` `/api/tasks/update`
+
+  > 检查是否有新的合作任务
+
+  - response
+
+  ```javascript
+  {
+    code: 200,
+    data: {
+      message: "success",
+      list: [
+        {
+          taskId: String,
+          adminId: String,
+          content: String,
+          importance: Number,
+          tag: String,
+          status: Boolean,
+          beginTime: Number,
+          endTime: Number,
+        },
+        …
+      ]
+    }
+  }
+  {
+    code: 200,
+    data: {
+      message: "no update"  // 没有新的合作任务
+    }
+  }
+  ```
+
+- `POST` `/api/tasks/update`
+
+  > 是否接受该更新，接受则修改relation中的acknowledge为true，成功加入合作任务；拒绝则删除relation
+
+  - body
+
+  ```javascript
+  {
+    taskId: String,
+    acknowledge: Boolean
+  }
+  ```
+
+  - response
+
+  ```javascript
+  {
+    code: 200,
+    data: {
+      message: "success"
+    }
+  }
+  {
+    code: 200,
+    data: {
+      message: "error"  //更新acknowledge出错或者删除relation出错
+    }
+  }
+  ```
+
+- `GET` `/api/tasks/[userId]`
 
   > 根据 userId 查找用户所有的 task
 
@@ -253,12 +345,21 @@
       list: [
         {
           taskId: String,
+          adminId: String,
           content: String,
           importance: Number,
           tag: String,
           status: Boolean,
-          beginTime: Date,
-          endTime: Date
+          beginTime: Number,
+          endTime: Number,
+          coworkers: [  // 该任务所属成员的信息，无合作者时数组长度为1
+            {
+              userId: String,
+              acknowledge: Boolean,
+              userName: String
+            },
+            …
+          ]
         },
         …
       ]
@@ -266,7 +367,7 @@
   }
   ```
 
-- `POST` `/api/tasks/userId`
+- `POST` `/api/tasks/[userId]`
 
   > 往数据库中添加待办事项
 
@@ -277,8 +378,8 @@
     content: String,
     importance: Number,
     tag: String,
-    beginTime: Date,
-    endTime: Date
+    beginTime: Number,
+    endTime: Number
   }
   ```
 
@@ -296,7 +397,7 @@
   }
   ```
 
-- `DELETE` `/api/tasks/userId`
+- `DELETE` `/api/tasks/[userId]`
 
   > 从数据库中删除待办事项
 
@@ -325,7 +426,7 @@
   }
   ```
 
-- `PUT` `/api/tasks/userId`
+- `PUT` `/api/tasks/[userId]`
 
   > 修改 task 的各个值，所有属性均为可选值，在需要更新时添加
 
@@ -338,8 +439,8 @@
     importance: Number,
     tag: String,
     status: Boolean,
-    beginTime: Date,
-    endTime: Date
+    beginTime: Number,
+    endTime: Number
   }
   ```
 
@@ -397,7 +498,7 @@
   {
     code: 200,
     data: {
-      message: "the relation already exists"  // taskId和coworkerId的关系已存在
+      message: "the user is already in your task"  // task合作者中已有该用户
     }
   }
   ```
@@ -428,6 +529,12 @@
     code: 200,
     data: {
       message: "delete failed"  // 各种原因导致了删除出错
+    }
+  }
+  {
+    code: 200,
+    data: {
+      message: "the user isn't in your task"  // task合作者中无该用户
     }
   }
   ```

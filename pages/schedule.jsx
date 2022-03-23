@@ -7,7 +7,6 @@ import TodoListCard from "../components/TodoListCard"
 
 export async function getServerSideProps({ req }) {
   const { userId } = req.cookies;
-
   const res = await fetch("http://localhost:3000/api/tasks/" + userId, {
     headers: {
       Cookie: req.headers.cookie,
@@ -58,25 +57,34 @@ export default function Schedule({ data, userId }) {
     useDate(date.toLocaleDateString());
   }
 
-  const judgeTheSameDate = (date,string) => {
-    const dateList = date.slice(0,10).split('-').map(i=>(+i));
-    const stringList = string.split('/');
-    for(let i = 0;i < 3;i++) {
-      if (dateList[i] != stringList[i]) return false;
+  const judgeTheSameDate = (beginTime,endTime,date) => {
+    date = new Date(date.split('/').join('-'));
+    const min = date.valueOf();
+    console.log(min)
+    const max = min + 86400000;
+    if (beginTime >= max || endTime < min) {
+      return false;
+    } else {
+      return true;
     }
-    return true;
   }
-  for(const i of lists) {
-    taskDays.add(i.beginTime.slice(0,10).split('-').map(i=>(+i)).toString())
+  for (const i of lists) {
+    let temp = i.beginTime;
+    while (temp <= i.endTime) {
+      const taskDay = new Date(temp).toLocaleDateString();
+      taskDays.add(taskDay);
+      temp += 86400000;
+    }
+    taskDays.add(new Date(i.endTime).toLocaleDateString());
   }
-
+  console.log(taskDays);
   return (
     <Layout>
       <AgendaScreen changeDate={changeDate} taskDays={taskDays} />
       <Typography.Title level={2} center="true">{date}</Typography.Title>
       <TodoListCard
         content={lists
-          .filter((i)=> judgeTheSameDate(i.beginTime, date))
+          .filter((i)=> judgeTheSameDate(i.beginTime, i.endTime, date))
           .filter((i) => i.status === false)}
         onItemChange={changeTaskStatus}
         header="未完成的任务"
@@ -84,7 +92,7 @@ export default function Schedule({ data, userId }) {
       <TodoListCard
         onItemChange={changeTaskStatus}
         content={lists
-          .filter((i)=> judgeTheSameDate(i.beginTime, date))
+          .filter((i)=> judgeTheSameDate(i.beginTime, i.endTime, date))
           .filter((i) => i.status === true)}
         header="已完成的任务"
       />

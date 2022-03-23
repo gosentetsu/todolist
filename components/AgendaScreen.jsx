@@ -13,7 +13,7 @@ export default function Schedule(props) {
     if (year == today[0] && month == today[1] && date == today[2]) {
       day.text = "今天";
     }
-    if(taskDays.has([year,month,date].toString())) {
+    if(taskDays.has([year,month,date].join('/'))) {
       day.className = "red";
     }
 
