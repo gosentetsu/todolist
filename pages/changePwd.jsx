@@ -55,8 +55,8 @@ export default function ChangePwd({userId}) {
       showValidateMessage={false}
       onFinish={updatePwd}
       footer={
-        <div style={{ margin: '16px 16px 0' }}>
-          <Button round nativeType="submit" type="primary" block>
+        <div style={{ margin: '16px 8px 0' }}>
+          <Button square size = "small" nativeType="submit" type="primary" block>
             提交
           </Button>
         </div>

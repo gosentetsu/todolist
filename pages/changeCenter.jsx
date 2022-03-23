@@ -57,8 +57,8 @@ export default function ChangeCenter({userId}) {
       <Form
         onFinish={updateCenter}
         footer={
-          <div style={{ margin: '16px 16px 0' }}>
-            <Button round nativeType="submit" type="primary" block size = "mini">
+          <div style={{ margin: '16px 8px 0' }}>
+            <Button square block nativeType="submit" type="primary" block size = "small">
               提交
             </Button>
           </div>

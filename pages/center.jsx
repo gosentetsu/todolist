@@ -61,11 +61,11 @@ export default function Center({data, userId}) {
 
  return (
     <Layout >
-      <Card style={{ marginBottom: 20 }}>
+      <Card style={{ marginBottom: 20 }} style = {{background : 'linear-gradient(-225deg, #9EFBD3 0%, #57E9F2 48%, #45D4FB 100%)', color:'white'}}>
         <Card.Cover border>
           
           <Cell
-            style={{ marginTop: 15 }}
+            style = {{background : 'linear-gradient(-225deg, #9EFBD3 0%, #57E9F2 48%, #45D4FB 100%)', color:'white'}}
             size = "large"
             title= {data.entity.userName}
             label={"ID：" + data.entity.userId}
@@ -103,18 +103,18 @@ export default function Center({data, userId}) {
       </Card>
       
 
-      <Cell title="修改密码" isLink onClick={()=>{router.push("/changePwd")}}/>
+      <Cell title="修改密码" isLink onClick={()=>{router.push("/changePwd")}} style={{ marginTop: 15 }}/>
       <Cell title="使用帮助" isLink onClick={()=>{router.push("/help")}}/>
       <Cell title="问题反馈" isLink onClick={()=>{router.push("/connect")}}/>
 
-      <div style={{ margin: '20px 0px 0' }}>
-        <Button square block size = "small"  onClick={logoutUser}>
+      <div style={{ margin: '15px 8px 0' }}>
+        <Button square block size = "small"  onClick={logoutUser} type = "warning" color = "linear-gradient(to right, #fa709a 0%, #fee140 100%)">
           退出登录
         </Button>
       </div>
 
-      <div style={{ margin: '8px 0px 0' }}>
-        <Button square block size = "small" onClick = {deleteUser}>
+      <div style={{ margin: '10px 8px 0' }}>
+        <Button color="linear-gradient(to right, #ff9569 0%, #e92758 100%)" square block size = "small" onClick = {deleteUser}>
           注销账户
         </Button>
       </div>
