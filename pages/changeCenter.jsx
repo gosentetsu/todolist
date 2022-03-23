@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import {
   Button,
   Field,
-  Uploader,
   Form,
+  Notify
 } from 'react-vant';
 import NavBarCard from "../components/NavBarCard";
 
@@ -37,9 +37,17 @@ export default function ChangeCenter({userId}) {
       .then((response) => response.json())
       .then((res) => {
         let { message } = res;
-        console.log(message)
-        if (message === "success") {
+        if (message == "success"){
+          Notify.show({
+            type:'primary',
+            message
+          });
           router.push("/center");
+        }else{
+          Notify.show({
+            type:'warning',
+            message
+          });
         }
       });
   }
@@ -72,7 +80,7 @@ export default function ChangeCenter({userId}) {
         >
           <Uploader />
         </Form.Item> */}
-        <Form.Item name="userName" label="用户名" rules={[{ required: true, message: '用户名不能为空' }]}>
+        <Form.Item name="userName" label="用户名" >
           <Field
               required
               placeholder="请输入用户名"
