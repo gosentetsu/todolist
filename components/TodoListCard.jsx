@@ -1,8 +1,13 @@
 import React from "react";
 import { List, Checkbox, Tag, Space, Empty } from "antd-mobile";
-import { TagOutline, CalendarOutline, StarOutline } from "antd-mobile-icons";
+import {
+  TagOutline,
+  CalendarOutline,
+  StarOutline,
+  AddCircleOutline,
+} from "antd-mobile-icons";
 export default function TodoListCard(props) {
-  let { content, header, onItemChange } = props;
+  let { content, header, onItemChange, addAction } = props;
   return (
     <div>
       <List mode="card" header={header}>
@@ -37,6 +42,7 @@ export default function TodoListCard(props) {
                 onChange={(val) => onItemChange(item, val)}
               />
             }
+            extra={<AddCircleOutline onClick={() => addAction(item)} />}
           >
             {item.content}
           </List.Item>
