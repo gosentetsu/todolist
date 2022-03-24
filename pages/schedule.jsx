@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Button, Typography } from 'react-vant';
+import { Button, Space, Typography } from 'react-vant';
 import Layout from "../components/Layout";
 import AgendaScreen from "../components/AgendaScreen"
 import TodoListCard from "../components/TodoListCard"
@@ -60,7 +60,6 @@ export default function Schedule({ data, userId }) {
   const judgeTheSameDate = (beginTime,endTime,date) => {
     date = new Date(date.split('/').join('-'));
     const min = date.valueOf();
-    console.log(min)
     const max = min + 86400000;
     if (beginTime >= max || endTime < min) {
       return false;
@@ -77,15 +76,15 @@ export default function Schedule({ data, userId }) {
     }
     taskDays.add(new Date(i.endTime).toLocaleDateString());
   }
-  console.log(taskDays);
   return (
-    <Layout>
+    <Space direction="vertical">
       <AgendaScreen changeDate={changeDate} taskDays={taskDays} />
       <Typography.Title level={2} center="true">{date}</Typography.Title>
       <TodoListCard
         content={lists
           .filter((i)=> judgeTheSameDate(i.beginTime, i.endTime, date))
-          .filter((i) => i.status === false)}
+          .filter((i) => i.status === false)
+          .sort((a, b)=>(a.endTime*(10-a.importance)-b.endTime*(10-b.importance)))}
         onItemChange={changeTaskStatus}
         header="未完成的任务"
       />
@@ -99,7 +98,10 @@ export default function Schedule({ data, userId }) {
       <Button type="primary" block round onClick={()=>{router.push({pathname:"/add", query:{initdate: date},})}}>
         添加待办
       </Button>
-    </Layout>
+      <br></br>
+      <br></br>
+      <Layout />
+    </Space>
     
   );
 }

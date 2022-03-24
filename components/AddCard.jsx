@@ -44,7 +44,6 @@ export default function AddCard(props){
 
   const onFinish = (values) => {
     addTask(values);
-    console.log(values)
   };
   return (
     <Form
@@ -95,7 +94,6 @@ export default function AddCard(props){
         initdate={initdate}
          />
       </Form.Item>
-
     </Form>
   )
 }
