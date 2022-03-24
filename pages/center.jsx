@@ -61,11 +61,11 @@ export default function Center({data, userId}) {
 
  return (
     <Layout >
-      <Card style={{ marginBottom: 20 }} style = {{background : 'linear-gradient(-225deg, #9EFBD3 0%, #57E9F2 48%, #45D4FB 100%)', color:'white'}}>
+      <Card >
         <Card.Cover border>
           
           <Cell
-            style = {{background : 'linear-gradient(-225deg, #9EFBD3 0%, #57E9F2 48%, #45D4FB 100%)', color:'white'}}
+            style = {{background : 'linear-gradient(to top, #4481eb 0%, #04befe 100%)', color:'white'}}
             size = "large"
             title= {data.entity.userName}
             label={"ID：" + data.entity.userId}
@@ -79,22 +79,30 @@ export default function Center({data, userId}) {
             }
           />
         </Card.Cover>
-        <Card.Header onClick={() => Toast.info('点击了Header区域')} border>
+        <Card.Header onClick={() => Toast.info('点击了Header区域')} border >
           个性签名
         </Card.Header>
         <Card.Body
           style={{
-            height: '20vh',
+            height: '23vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            background:'#F5FFFA'
           }}
         >
           {data.entity.slogan}
         </Card.Body>
-        <Card.Footer border>
+        <Card.Footer border 
+          style={{
+            height: '3vh',
+            display: 'flex',
+            justifyContent: 'right',
+            alignItems: 'center',
+          }}
+        >
           <Space>
-            <Button round size="small" icon = {<Edit color="black" fontSize = "40px"/> } iconPosition="left" onClick={()=>{router.push("/changeCenter")}}>
+            <Button size="mini" icon = {<Edit color="black" fontSize = "40px"/> } iconPosition="left" onClick={()=>{router.push("/changeCenter")}} type = 'warning'>
               修改
             </Button>
             
@@ -102,12 +110,14 @@ export default function Center({data, userId}) {
         </Card.Footer>
       </Card>
       
+      <div style={{ margin: '10px 8px 0' }}>
+        <Cell title="修改密码" isLink onClick={()=>{router.push("/changePwd")}} />
+        <Cell title="使用帮助" isLink onClick={()=>{router.push("/help")}}/>
+        <Cell title="问题反馈" isLink onClick={()=>{router.push("/connect")}}/>
+      </div>
+      
 
-      <Cell title="修改密码" isLink onClick={()=>{router.push("/changePwd")}} style={{ marginTop: 15 }}/>
-      <Cell title="使用帮助" isLink onClick={()=>{router.push("/help")}}/>
-      <Cell title="问题反馈" isLink onClick={()=>{router.push("/connect")}}/>
-
-      <div style={{ margin: '15px 8px 0' }}>
+      <div style={{ margin: '10px 8px 0' }}>
         <Button square block size = "small"  onClick={logoutUser} type = "warning" color = "linear-gradient(to right, #fa709a 0%, #fee140 100%)">
           退出登录
         </Button>
