@@ -1,16 +1,18 @@
 import React, {useState} from "react";
 import { List, Checkbox, Tag, Space, Empty } from "antd-mobile";
-import { Dialog, Field, Button, Toast } from 'react-vant';
+import { Dialog, Field, Toast } from 'react-vant';
 import {
   TagOutline,
   CalendarOutline,
   StarOutline,
   AddCircleOutline,
+  AddOutline
 } from "antd-mobile-icons";
 export default function TodoListCard(props) {
   let { content, header, onItemChange } = props;
   const [visible, setVisible] = useState(false);
   const [tempTaskId, setTempTaskId] = useState();
+  const [tempName, setTempName] = useState()
   const addCooperatorList = (name) => {
     const options = {
       method: "POST",
@@ -26,33 +28,12 @@ export default function TodoListCard(props) {
           forbidClick: true,
         });
         if (message === "success") {
-          setCooperatorList(cooperatorList.add(name));
-        }
-      });
-  }
-  const deleteooperatorList = (item) => {
-    const options = {
-      method: "DETELE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({taskId:tempTaskId, coworkerUserName:item}),
-    };
-    fetch("/api/tasks/coworker", options)
-      .then((response) => response.json())
-      .then((res) => {
-        let { message } = res;
-        Toast({
-          message: message,
-          forbidClick: true,
-        });
-        if (message === "success") {
-          setCooperatorList(cooperatorList.delete(item));
         }
       });
   }
   const addAction = (item) => {
     setVisible(true);
     setTempTaskId(item.taskId);
-    setCooperatorList(new Set());
   }
   return (
     <div>
@@ -97,29 +78,19 @@ export default function TodoListCard(props) {
       <Dialog
         visible={visible}
         title="添加合作者"
-        showCancelButton
         onConfirm={() => {
           setVisible(false);
         }}
-        onCancel={() => setVisible(false)}
       >
         <Field
       center
       clearable
       label="合作者"
       placeholder="请输入合作者username"
-      button={
-        <Button size="small" type="primary" onClick={(username)=>{addCooperatorList(username)}}>
-          添加
-        </Button>
-      }
+      rightIcon = {<AddOutline />}
+      onClickRightIcon={()=>{addCooperatorList(tempName)}}
+      onChange={(value)=>{setTempName(value)}}
     />
-    <Space>
-      点击合作者名称删除合作者
-      {cooperatorList.forEach((item)=>{
-        <Button onClick={(item) => deleteooperatorList(item)}>{item}</Button>
-      })}
-    </Space>
   </Dialog>
     </div>
   );
