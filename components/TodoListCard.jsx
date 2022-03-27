@@ -54,8 +54,8 @@ export default function TodoListCard(props) {
     console.log("update---");
     console.log(item);
     router.push({
-      pathname: "/add",
-      query: { initdate: new Date().toLocaleDateString() },
+      pathname: "/updateTask",
+      query: item,
     });
   };
   const handleDeleteItem = (item) => {
