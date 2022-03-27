@@ -67,12 +67,14 @@ export default function Home({ data, userId }) {
         onItemChange={changeTaskStatus}
         header="未完成的任务"
         addAction={(item) => console.log(item)}
+        onModalClose={getAlltasks}
       />
       <TodoListCard
         onItemChange={changeTaskStatus}
         content={lists.filter((i) => i.status === true)}
         header="已完成的任务"
         addAction={(item) => console.log(item)}
+        onModalClose={getAlltasks}
       />
     </Layout>
   );

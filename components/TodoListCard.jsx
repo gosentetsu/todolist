@@ -1,6 +1,16 @@
 import React, { useState } from "react";
-import { List, Checkbox, Tag, Space, Empty, Modal, Toast } from "antd-mobile";
-import { Dialog, Field } from "react-vant";
+import {
+  List,
+  Checkbox,
+  Tag,
+  Space,
+  Empty,
+  Modal,
+  Toast,
+  Form,
+  Input,
+  DatePicker,
+} from "antd-mobile";
 import {
   TagOutline,
   CalendarOutline,
@@ -9,12 +19,19 @@ import {
   AddOutline,
   TeamOutline,
 } from "antd-mobile-icons";
+import { Dialog, Field } from "react-vant";
 import jsCookie from "js-cookie";
+import add from "../pages/add";
+import { useRouter } from "next/router";
+
 export default function TodoListCard(props) {
-  let { content, header, onItemChange } = props;
+  let { content, header, onItemChange, onModalClose } = props;
   const [visible, setVisible] = useState(false);
+  const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [tempTaskId, setTempTaskId] = useState();
   const [tempName, setTempName] = useState();
+
+  const router = useRouter();
   const addCooperatorList = (name) => {
     const options = {
       method: "POST",
@@ -23,13 +40,10 @@ export default function TodoListCard(props) {
     };
     fetch("/api/tasks/coworker", options)
       .then((response) => response.json())
-      .then((res) => {
-        let { message } = res;
+      .then((response) => {
         Toast.show({
-          content: message,
+          content: response.message,
         });
-        if (message === "success") {
-        }
       });
   };
   const handleAddCoworker = (item) => {
@@ -37,23 +51,26 @@ export default function TodoListCard(props) {
     setTempTaskId(item.taskId);
   };
   const handleUpdateItem = (item) => {
+    console.log("update---");
     console.log(item);
-    /**
-     * invoke add item function here
-     */
+    router.push({
+      pathname: "/add",
+      query: { initdate: new Date().toLocaleDateString() },
+    });
   };
   const handleDeleteItem = (item) => {
     console.log(item.taskId);
     const options = {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: item.taskId,
+      body: JSON.stringify({ taskId: item.taskId }),
     };
 
-    fetch("/api/tasks/" + jsCookie.get("userId"))
+    fetch("/api/tasks/" + jsCookie.get("userId"), options)
       .then((response) => response.json())
       .then((response) => {
         console.log("deleted");
+        console.log(response.message);
         Toast.show({
           content: response.message,
         });
@@ -97,10 +114,12 @@ export default function TodoListCard(props) {
             }
             arrow
             onClick={(e) => {
+              // Modal
               if (e.target.className !== "adm-list-item-content-main") return;
               Modal.show({
                 closeOnAction: true,
                 closeOnMaskClick: true,
+                onClose: onModalClose,
                 header: (
                   <Space wrap>
                     <Tag color="success" fill="solid">
@@ -153,6 +172,7 @@ export default function TodoListCard(props) {
           </List.Item>
         ))}
       </List>
+      {/* mask area */}
       <Dialog
         visible={visible}
         title="添加合作者"
