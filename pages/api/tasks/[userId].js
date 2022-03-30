@@ -97,7 +97,7 @@ export default async function handler(req, res) {
       });
       break;
     case "PUT":
-      check_result = checkAttr(body, ["taskId", "content", "importance", "tag", "status", "beginTime", "endTime"], false);
+      check_result = checkAttr(body, ["taskId", "adminId", "content", "importance", "tag", "status", "beginTime", "endTime"], false);
       if(!check_result){
         return res.status(200).json({ message: "wrong attributes"});
       }
