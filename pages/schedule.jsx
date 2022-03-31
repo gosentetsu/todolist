@@ -95,9 +95,12 @@ export default function Schedule({ data, userId }) {
           .filter((i) => i.status === true)}
         header="已完成的任务"
       />
-      <Button type="primary" block round onClick={()=>{router.push({pathname:"/add", query:{initdate: date},})}}>
-        添加待办
-      </Button>
+      <div style={{ margin: '4px 8px 0' }}>
+        <Button type="primary" block square size = "small"  onClick={()=>{router.push({pathname:"/add", query:{initdate: date},})}}>
+          添加待办
+        </Button>
+      </div>
+      
       <br></br>
       <br></br>
       <Layout />

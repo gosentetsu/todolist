@@ -50,8 +50,8 @@ export default function AddCard(props){
       form={form}
       onFinish={onFinish}
       footer={
-        <div style={{ margin: '16px 16px 0' }}>
-          <Button round nativeType="submit" type="primary" block onClick={()=>{}}>
+        <div style={{ margin: '16px 8px 0' }}>
+          <Button square size = "small" nativeType="submit" type="primary" block onClick={()=>{}}>
             提交
           </Button>
         </div>

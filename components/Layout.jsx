@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/router";
-import { Badge, TabBar } from "antd-mobile";
+import { TabBar } from "antd-mobile";
 import {
   CalendarOutline,
   UnorderedListOutline,
   UserOutline,
 } from "antd-mobile-icons";
-import { useSelector } from "react-redux";
 export default function Layout(props) {
   const router = useRouter();
   const tabs = [
@@ -30,6 +29,7 @@ export default function Layout(props) {
     <div>
       <main>{props.children}</main>
       <TabBar
+        style = {{background : 'linear-gradient(to top, #fad0c4 0%, #fad0c4 1%, #ffd1ff 100%)', color:'white'}}
         className="bar"
         onChange={(key) => router.push(key)}
         activeKey={router.pathname}
